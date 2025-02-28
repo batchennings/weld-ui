@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    html {
+        font-size: 16px; /* Keep this at 16px for rem calculations */
+    }
+
+    body {
+        font-size: 13px; /* Set your desired font size here */
+    }
+}
