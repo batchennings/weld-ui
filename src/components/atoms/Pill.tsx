@@ -2,7 +2,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
-const pillVariants = cva('rounded-full justify-start items-center inline-flex px-2 gap-1.5 h-6 text-sm',
+const pillVariants = cva('rounded-full justify-start items-center inline-flex text-sm',
     {
         variants: {
             type: {
@@ -16,6 +16,10 @@ const pillVariants = cva('rounded-full justify-start items-center inline-flex px
                 light: "",
                 filled: "",
                 stroke: "",
+            },
+            size: {
+                md: "px-2 gap-1.5 h-6",
+                sm: "px-1.5 gap-1 h-5",
             }
         },
         compoundVariants: [
@@ -83,6 +87,7 @@ const pillVariants = cva('rounded-full justify-start items-center inline-flex px
         defaultVariants: {
             style: 'light',
             type: "gray",
+            size: "md"
         },
     },
 );
@@ -92,6 +97,7 @@ VariantProps<typeof pillVariants> & {
     Icon?: React.ComponentType<IconProps>;
     type: string;
     style: string;
+    size: string;
     content: string;
 };
 
@@ -101,11 +107,11 @@ type IconProps = {
 }
 
 const Pill = React.forwardRef<HTMLDivElement, PillProps>(
-    ({ className, type, style, Icon, title, content, ...props }, ref) => (
+    ({ className, type, style, Icon, title, size, content, ...props }, ref) => (
         <div
             ref={ref}
             role="alert"
-            className={cn(pillVariants({ type, style }), className, "")}
+            className={cn(pillVariants({ type, style, size }), className, "")}
             {...props}
         >
             {Icon ? <div className=""><Icon size={12} /></div> : null}

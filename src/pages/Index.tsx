@@ -4,7 +4,7 @@ import { Pill } from "@/components/atoms/Pill"
 import { Table } from "@/components/organisms/Table";
 
 import { Pen, Plus, PlusCircle, Trash, Info } from "@/icons"
-import {CheckIcon, InfoIcon, AlertIcon} from '@primer/octicons-react'
+import {CheckIcon, InfoIcon, AlertIcon, DotFillIcon} from '@primer/octicons-react'
 
 const tabs = [
     {
@@ -146,6 +146,7 @@ const Index = () => {
                 <Pill type="red" style="filled" content="Label" Icon={AlertIcon}/>
                 <Pill type="red" style="light" content="Label" Icon={AlertIcon}/>
                 <Pill type="red" style="stroke" content="Label" Icon={AlertIcon}/>
+                <Pill type="blue" style="light" content="Label" size="sm" Icon={DotFillIcon}/>
             </div>
             <div className="">
                 <Table data={tableData} columns={tableColumns} />

@@ -16,11 +16,30 @@ const meta: Meta<typeof Pill> = {
         },
         style: {
             control: 'select',
-            options: ["filled", "light", "stroke"]
+            options: ["filled", "light", "stroke"],
+            table: {
+                defaultValue: {
+                    summary: "light"
+                }
+            }
+        },
+        size: {
+            control: 'select',
+            options: ["md", "sm"],
+            table: {
+                defaultValue: {
+                    summary: "md"
+                }
+            }
         },
         type: {
             control: 'select',
-            options: ["red", "amber", "blue", "green", "gray"]
+            options: ["red", "amber", "blue", "green", "gray"],
+            table: {
+                defaultValue: {
+                    summary: "gray"
+                }
+            }
         },
         Icon: {
             description: 'Icon component to display',
@@ -41,6 +60,7 @@ export const BluePill: Story = {
         content: "En cours d'éxécution",
         type: "blue",
         style: "light",
+        size: "md",
         Icon: DotFillIcon
     }
 }
