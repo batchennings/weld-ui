@@ -4,118 +4,12 @@ import { Pill } from "@/components/atoms/Pill"
 import { Table } from "@/components/organisms/Table";
 
 import { Pen, Plus, PlusCircle, Trash, Info } from "@/icons"
-import {CheckIcon, InfoIcon, AlertIcon, DotFillIcon} from '@primer/octicons-react'
+import { CheckIcon, InfoIcon, AlertIcon, DotFillIcon, SearchIcon, XIcon } from '@primer/octicons-react'
+import Dropdown from "@/components/atoms/Dropdown";
 
-const tabs = [
-    {
-        label: "Souscriptions",
-        icon: "",
-        promoted: true,
-        active: true
-    },
-    {
-        label: "Demandes",
-        icon: "",
-        promoted: true,
-        active: false
-    },
-    {
-        label: "Personnes affiliées",
-        icon: "",
-        promoted: true,
-        active: false
-    },
-    {
-        label: "Échéanciers'",
-        icon: "",
-        promoted: false,
-        active: false
-    },
-]
-
-const tableData = [
-    {
-        "id": 1,
-        "first_name": "Alysia",
-        "last_name": "Ivashechkin",
-        "email": "aivashechkin0@example.com",
-        "phone": "(424) 8787997",
-        "image": "https://picsum.photos/400",
-        "state": "California",
-        "city": "Los Angeles",
-        "address": "2 Vermont Junction"
-    },
-    {
-        "id": 2,
-        "first_name": "Alicia",
-        "last_name": "Sworder",
-        "email": "asworder1@mozilla.com",
-        "phone": "(804) 8988278",
-        "image": "https://picsum.photos/400",
-        "state": "Virginia",
-        "city": "Richmond",
-        "address": "362 Hoffman Court"
-    }
-]
-const tableColumns = [
-    {
-        header: "ID",
-        priority: "secondary",
-        dataType: "string",
-        hasHeaderLabel: true,
-        accessorKey: "id"
-    },
-    {
-        header: "First Name",
-        priority: "primary",
-        dataType: "string",
-        hasHeaderLabel: true,
-        accessorKey: "first_name"
-    },
-    {
-        header: "Last Name",
-        priority: "primary",
-        dataType: "string",
-        hasHeaderLabel: true,
-        accessorKey: "last_name"
-    },
-    {
-        header: "Email",
-        priority: "secondary",
-        dataType: "string",
-        hasHeaderLabel: true,
-        accessorKey: "email"
-    },
-    {
-        header: "Phone",
-        priority: "primary",
-        dataType: "string",
-        hasHeaderLabel: true,
-        accessorKey: "phone"
-    },
-    {
-        header: "State",
-        priority: "secondary",
-        dataType: "string",
-        hasHeaderLabel: true,
-        accessorKey: "state"
-    },
-    {
-        header: "City",
-        priority: "secondary",
-        dataType: "string",
-        hasHeaderLabel: true,
-        accessorKey: "city"
-    },
-    {
-        header: "Address",
-        priority: "secondary",
-        dataType: "string",
-        hasHeaderLabel: true,
-        accessorKey: "address"
-    }
-]
-
+// mock data
+import { tableData, tableColumns } from "@/mock/table"
+import { InputText } from "@/components/atoms/InputText";
 
 const Index = () => {
     function clickButton() {
@@ -140,14 +34,19 @@ const Index = () => {
                 <Button label="Lien simple" type="link" size="md" icon={<PlusCircle />} />
             </div>
             <div>
-                <Alert content="Ce message a de l'importance" variant="warning" title="Titre" action="Voir la page" Icon={InfoIcon}/>
+                <Alert content="Ce message a de l'importance" variant="warning" title="Titre" action="Voir la page" Icon={InfoIcon} />
             </div>
             <div className="flex flex-row gap-4">
-                <Pill type="red" style="filled" content="Label" Icon={AlertIcon}/>
-                <Pill type="red" style="light" content="Label" Icon={AlertIcon}/>
-                <Pill type="red" style="stroke" content="Label" Icon={AlertIcon}/>
-                <Pill type="blue" style="light" content="Label" size="sm" Icon={DotFillIcon}/>
+                <Pill type="red" style="filled" content="Label" Icon={AlertIcon} />
+                <Pill type="red" style="light" content="Label" Icon={AlertIcon} />
+                <Pill type="red" style="stroke" content="Label" Icon={AlertIcon} />
+                <Pill type="blue" style="light" content="Label" size="sm" Icon={DotFillIcon} />
             </div>
+            <div className="flex flex-row gap-4">
+                <Dropdown />
+                <InputText placeholder="Rechercher" size={24} IconHeading={SearchIcon} shortcut="Ctrl + K"/>
+            </div>
+
             <div className="">
                 <Table data={tableData} columns={tableColumns} />
             </div>

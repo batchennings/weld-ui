@@ -18,6 +18,7 @@ export default {
             lg: "15px",
             base: "13px",
             sm: "11px",
+            xs: "9px",
         },
         borderRadius: {
             sm: "3px",
