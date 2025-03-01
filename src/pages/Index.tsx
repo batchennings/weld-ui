@@ -42,8 +42,12 @@ const Index = () => {
             <div className="flex flex-row gap-4">
                 <InputText placeholder="Rechercher" size={24} IconHeading={SearchIcon} shortcut="Ctrl + K" />
             </div>
-            <Select size="md" placeholder="Choisir" options={selectData}/>
 
+            <div className="flex flex-row gap-1">
+                <InputText placeholder="Rechercher" size={24} IconHeading={SearchIcon} shortcut="Ctrl + K" />
+                <Select size="md" placeholder="Choisir" options={selectData}/>
+                <Button label="Modifier" type="secondary" Icon={Pen} size="md" />
+            </div>
             <div className="">
                 <Table data={tableData} columns={tableColumns} />
             </div>

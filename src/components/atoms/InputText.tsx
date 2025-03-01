@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { cn } from '@/lib/utils';
 import { VariantProps, cva } from 'class-variance-authority';
+import { IconProps } from '@/types/icons'
 
 const inputVariants = cva(
     'px-2.5 bg-form-bg-color rounded-md focus:shadow-[0_0_0_4px_rgba(18,0,108,0.22)] focus:border-form-border-color-focus border disabled:cursor-not-allowed border-form-border-color justify-start items-center gap-2 inline-flex focus:outline-none disabled:bg-form-bg-color-disabled text-base transition ease-out',
@@ -15,7 +16,7 @@ const inputVariants = cva(
             },
             variantSize: {
                 lg: 'p-3.5',
-                md: 'p-2.5',
+                md: 'p-2.5 h-8',
             },
         },
         defaultVariants: {
@@ -26,23 +27,17 @@ const inputVariants = cva(
 );
 
 export type InputTextProps = React.InputHTMLAttributes<HTMLInputElement> &
-VariantProps<typeof inputVariants> & {
-    IconHeading?: React.ComponentType<IconProps>;
-    IconTrailing?: React.ComponentType<IconProps>;
-    actionAssociated?: React.ReactNode;
-    actionAssociatedOnClick?: () => void;
-    maxLength?: number;
-    onInput?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    placeholder?: string;
-    size: number;
-    shortcut?: string;
-};
-
-type IconProps = {
-    size?: number;
-    color?: string;
-    className: string;
-}
+    VariantProps<typeof inputVariants> & {
+        IconHeading?: React.ComponentType<IconProps>;
+        IconTrailing?: React.ComponentType<IconProps>;
+        actionAssociated?: React.ReactNode;
+        actionAssociatedOnClick?: () => void;
+        maxLength?: number;
+        onInput?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+        placeholder?: string;
+        size: number;
+        shortcut?: string;
+    };
 const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
     (
         {
@@ -69,7 +64,7 @@ const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
 
                     {IconHeading && (
                         <div className="absolute left-0 pl-2">
-                            <IconHeading size={18} className="text-base-icon-color-secondary"/>
+                            <IconHeading size={18} className="text-base-icon-color-secondary" />
                         </div>
                     )}
                     <input
@@ -91,7 +86,7 @@ const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
                     />
 
                     {IconTrailing && (
-                        <div className="absolute right-0 pr-2"><IconTrailing size={18} className="text-base-icon-color-secondary"/></div>
+                        <div className="absolute right-0 pr-2"><IconTrailing size={18} className="text-base-icon-color-secondary" /></div>
                     )}
                     {shortcut && (
                         <div className="absolute right-2 pr-2 bg-kbd-bg-color text-kbd-text-color text-xs font-bold px-1.5 py-1 rounded-sm">{shortcut}</div>

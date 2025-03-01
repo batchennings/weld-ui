@@ -24,11 +24,11 @@ const SelectVariants = cva(
         variants: {
             size: {
                 sm: ["text-sm", "px-2", "gap-1", "h-6"],
-            md: ["text-base", "px-3", "gap-2", "h-8"],
-            lg: ["text-lg", "px-4", "gap-2", "h-10"],
-        },
-    }
-})
+                md: ["text-base", "px-3", "gap-2", "h-8"],
+                lg: ["text-lg", "px-4", "gap-2", "h-10"],
+            },
+        }
+    })
 export type SelectProps = VariantProps<typeof SelectVariants> & {
     content: string;
     placeholder: string;
