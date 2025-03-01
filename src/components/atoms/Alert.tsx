@@ -1,6 +1,7 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 import { Button } from "@/components/atoms/Button"
+import { IconProps } from '@/types/icons'
 
 import { cn } from '@/lib/utils';
 const alertVariants = cva(
@@ -31,10 +32,6 @@ export type AlertProps = React.HTMLAttributes<HTMLDivElement> &
         action?: string;
     };
 
-type IconProps = {
-    size?: number;
-    color?: string;
-}
 const Alert = React.forwardRef<AlertProps>(
     ({ className, type, Icon, title, content, action, ...props }, ref) => {
         return (

@@ -9,6 +9,7 @@ import Dropdown from "@/components/atoms/Dropdown";
 
 // mock data
 import { tableData, tableColumns } from "@/mock/table"
+import { selectData } from "@/mock/select"
 import { InputText } from "@/components/atoms/InputText";
 import { Component } from "@/components/atoms/Component";
 import { Select } from "@/components/atoms/Select";
@@ -41,7 +42,7 @@ const Index = () => {
             <div className="flex flex-row gap-4">
                 <InputText placeholder="Rechercher" size={24} IconHeading={SearchIcon} shortcut="Ctrl + K" />
             </div>
-            <Select size="md" placeholder="Sélectionner un moyen de transport" />
+            <Select size="md" placeholder="Choisir" options={selectData}/>
 
             <div className="">
                 <Table data={tableData} columns={tableColumns} />
