@@ -1,4 +1,4 @@
-import { cva } from "class-variance-authority";
+import { cva, type VariantProps } from "class-variance-authority";
 import React, { ReactNode } from 'react';
 
 // type Props = React.ButtonHTMLAttributes<HTMLButtonElement> & VariantProps<typeof button>;
@@ -71,18 +71,21 @@ const buttonVariants = cva("button transition justify-start items-center rounded
     },
 });
 
-export interface ButtonProps {
-    type: string;
-    size: string;
+export type ButtonProps  = VariantProps<typeof buttonVariants> & {
     label: string;
-    icon?: ReactNode;
+    Icon?: React.ComponentType<IconProps>;
     onClick?: () => void;
 }
 
-export const Button: React.FunctionComponent<ButtonProps> = ({ type, label, size, icon, ...rest }) => {
+type IconProps = {
+    size?: number;
+    color?: string;
+}
+export const Button: React.FunctionComponent<ButtonProps> = ({ label, Icon, onClick, type, size, ...rest }) => {
     return (
-        <button {...rest} className={buttonVariants({ type, size })} onClick="">
-            {icon}{label}
+        <button {...rest} className={buttonVariants({ type, size })} onClick={onClick}>
+            {Icon && <Icon />}
+            {label}
         </button>
     );
 };
