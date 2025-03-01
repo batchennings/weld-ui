@@ -19,7 +19,7 @@ const Index = () => {
     }
     return (
         <div className="m-8 flex flex-col gap-4">
-            <Component Icon={InfoIcon} content="Template component" type="main"/>
+            <Component Icon={InfoIcon} content="Template component" type="main" />
             <div className="flex flex-row w-fit flex-wrap gap-4">
                 <Button label="Bouton simple" type="primary" size="md" onClick={clickButton} />
                 <Button label="Ajouter un membre" type="primary" Icon={Plus} size="sm" />
@@ -39,9 +39,9 @@ const Index = () => {
                 <Pill type="blue" style="light" content="Label" size="sm" Icon={DotFillIcon} />
             </div>
             <div className="flex flex-row gap-4">
-                <InputText placeholder="Rechercher" size={24} IconHeading={SearchIcon} shortcut="Ctrl + K"/>
+                <InputText placeholder="Rechercher" size={24} IconHeading={SearchIcon} shortcut="Ctrl + K" />
             </div>
-            <Select />
+            <Select size="md" placeholder="Sélectionner un moyen de transport" />
 
             <div className="">
                 <Table data={tableData} columns={tableColumns} />
