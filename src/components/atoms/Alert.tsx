@@ -24,34 +24,36 @@ const alertVariants = cva(
 );
 
 export type AlertProps = React.HTMLAttributes<HTMLDivElement> &
-VariantProps<typeof alertVariants> & {
-    Icon?: React.ComponentType<IconProps>;
-    title?: string;
-    content: string;
-    action?: string;
-};
+    VariantProps<typeof alertVariants> & {
+        Icon?: React.ComponentType<IconProps>;
+        title?: string;
+        content: string;
+        action?: string;
+    };
 
 type IconProps = {
     size?: number;
     color?: string;
 }
-
-const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
-    ({ className, type, Icon, title, content, action, ...props }, ref) => (
-        <div
-            ref={ref}
-            role="alert"
-            className={cn(alertVariants({ type }), className, "flex flex-row gap-2.5")}
-            {...props}
-        >
-            {Icon ? <div className=""><Icon size={24} /></div> : null}
-            <div className="flex flex-col grow">
-                <h5 className="font-bold">{title}</h5>
-                <p>{content}</p>
+const Alert = React.forwardRef<AlertProps>(
+    ({ className, type, Icon, title, content, action, ...props }, ref) => {
+        return (
+            <div
+                ref={ref}
+                role="alert"
+                className={cn(alertVariants({ type }), className, "flex flex-row gap-2.5")}
+                {...props}
+            >
+                {Icon ? <div className=""><Icon size={24} /></div> : null}
+                <div className="flex flex-col grow">
+                    <h5 className="font-bold">{title}</h5>
+                    <p>{content}</p>
+                </div>
+                {action ? <div className="flex"><Button label={action} type="secondary" size="md" /></div> : null}
             </div>
-            {action ? <div className="flex"><Button label={action} type="secondary" size="md" /></div> : null}
-        </div>
-    ),
+        )
+    },
 );
+
 Alert.displayName = 'Alert';
 export { Alert };

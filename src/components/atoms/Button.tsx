@@ -1,8 +1,6 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import React, { ReactNode } from 'react';
 
-// type Props = React.ButtonHTMLAttributes<HTMLButtonElement> & VariantProps<typeof button>;
-
 const buttonVariants = cva("button transition justify-start items-center rounded-md inline-flex flex-nowrap flex-row w-auto transition ease-out duration-300 disabled:cursor-not-allowed", {
     variants: {
         type: {
@@ -71,22 +69,22 @@ const buttonVariants = cva("button transition justify-start items-center rounded
     },
 });
 
-export type ButtonProps  = VariantProps<typeof buttonVariants> & {
+export type ButtonProps = React.HTMLAttributes<HTMLButtonElement> & VariantProps<typeof buttonVariants> & {
     label: string;
     Icon?: React.ComponentType<IconProps>;
-    onClick?: () => void;
 }
 
 type IconProps = {
     size?: number;
     color?: string;
 }
-export const Button: React.FunctionComponent<ButtonProps> = ({ label, Icon, onClick, type, size, ...rest }) => {
+export const Button = React.forwardRef<ButtonProps> (({ label, Icon, onClick, type, size, ...rest }, ref) => {
     return (
-        <button {...rest} className={buttonVariants({ type, size })} onClick={onClick}>
+        <button {...rest} className={buttonVariants({ type, size })} ref={ref} onClick={onClick}>
             {Icon && <Icon />}
             {label}
         </button>
-    );
-};
+    )
+}
+)
 

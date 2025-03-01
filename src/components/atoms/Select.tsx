@@ -6,17 +6,6 @@ import { cn } from "@/lib/utils";
 import { SelectItemProps } from "@radix-ui/react-select";
 import { warn } from "console";
 
-// const SelectVariants = cva("border p-4 flex flex-row gap-2", {
-//     variants: {
-//         type: {
-//             main: "bg-badge-bg-color text-white",
-//             toto: ""
-//         },
-//     },
-//     defaultVariants: {
-//     },
-// });
-
 export type SelectProps = {
     content: string;
 };
