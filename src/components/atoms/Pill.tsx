@@ -103,18 +103,16 @@ export type PillProps = React.HTMLAttributes<HTMLDivElement> &
     };
 
 
-const Pill = React.forwardRef<HTMLDivElement, PillProps>(
+const Pill: React.FunctionComponent<PillProps> =
     ({ className, type, style, Icon, title, size, content, ...props }, ref) => (
         <div
-            ref={ref}
             role="alert"
             className={cn(pillVariants({ type, style, size }), className, "")}
-            {...props}
-        >
-            {Icon ? <div className=""><Icon size={12} /></div> : null}
-            <p>{content}</p>
-        </div>
-    ),
-);
+        {...props}
+    >
+        {Icon ? <div className=""><Icon size={12} /></div> : null}
+        <p>{content}</p>
+    </div>
+)
 Pill.displayName = 'Pill';
 export { Pill };

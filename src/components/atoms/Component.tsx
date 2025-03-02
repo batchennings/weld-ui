@@ -18,13 +18,12 @@ export type ComponentProps = React.HTMLAttributes<HTMLDivElement> & VariantProps
     Icon?: React.ComponentType<IconProps>;
 };
 
-export const Component = React.forwardRef<ComponentProps>(({ type, Icon, content, ...rest }, ref) => {
+export const Component: React.FunctionComponent<ComponentProps> = ({ type, Icon, content, ...rest }) => {
     return (
-        <div {...rest} className={ComponentVariants({ type })} ref={ref}>
+        <div {...rest} className={ComponentVariants({ type })} >
             {Icon && <Icon />}
             {content}
         </div>
     )
 }
-)
 

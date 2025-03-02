@@ -1,6 +1,6 @@
 import { cva, type VariantProps } from "class-variance-authority";
 
-export const TableHeaderCell = ({content, ...rest} : Props ) => {
+export const TableHeaderCell = ({ content, ...rest }: Props) => {
     return (
         <th className="p-3 border-b text-gray-500 text-left">{content}</th>
     );
@@ -24,15 +24,15 @@ const bodyCell = cva("border-b p-4", {
             disabled: false,
             class: "hover:bg-gray-100",
         },
-        { intent: "primary", size: "medium"},
+        { intent: "primary", size: "medium" },
     ],
     defaultVariants: {
         type: "primary",
     },
 });
-export const TableBodyCell = ({content, priority, ...rest} : Props ) => {
+export const TableBodyCell: React.FunctionComponent<T> = ({ content, priority, ...rest }: Props) => {
     console.log(content.props)
     return (
-        <td className={bodyCell({priority})} >{content}</td>
+        <td className={bodyCell({ priority })} >{content}</td>
     );
 };

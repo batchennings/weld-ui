@@ -38,75 +38,69 @@ export type InputTextProps = React.InputHTMLAttributes<HTMLInputElement> &
         size: number;
         shortcut?: string;
     };
-const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
-    (
-        {
-            className,
-            variant,
-            type,
-            variantSize,
-            isError,
-            IconHeading,
-            IconTrailing,
-            actionAssociated,
-            actionAssociatedOnClick,
-            maxLength,
-            size,
-            shortcut,
-            onInput,
-            ...props
-        },
-        ref,
-    ) => {
-        return (
-            <div className="flex-col justify-start items-start gap-1 inline-flex">
-                <div className="flex items-center gap-2 relative">
+const InputText: React.FunctionComponent<InputTextProps> = ({
+    className,
+    variant,
+    type,
+    variantSize,
+    isError,
+    IconHeading,
+    IconTrailing,
+    actionAssociated,
+    actionAssociatedOnClick,
+    maxLength,
+    size,
+    shortcut,
+    onInput,
+    ...props
+}) => {
+    return (
+        <div className="flex-col justify-start items-start gap-1 inline-flex">
+            <div className="flex items-center gap-2 relative">
 
-                    {IconHeading && (
-                        <div className="absolute left-0 pl-2">
-                            <IconHeading size={18} className="text-base-icon-color-secondary" />
-                        </div>
+                {IconHeading && (
+                    <div className="absolute left-0 pl-2">
+                        <IconHeading size={18} className="text-base-icon-color-secondary" />
+                    </div>
+                )}
+                <input
+                    type={type}
+                    size={size}
+                    className={cn(
+                        inputVariants({ variant, variantSize }),
+                        className,
+                        {
+                            'pl-8': IconHeading,
+                            'pr-8': actionAssociated,
+                            'lr-8': IconTrailing,
+                        },
                     )}
-                    <input
-                        type={type}
-                        size={size}
-                        className={cn(
-                            inputVariants({ variant, variantSize }),
-                            className,
-                            {
-                                'pl-8': IconHeading,
-                                'pr-8': actionAssociated,
-                                'lr-8': IconTrailing,
-                            },
-                        )}
-                        ref={ref}
-                        maxLength={maxLength}
-                        onInput={onInput}
-                        {...props}
-                    />
+                    maxLength={maxLength}
+                    onInput={onInput}
+                    {...props}
+                />
 
-                    {IconTrailing && (
-                        <div className="absolute right-0 pr-2"><IconTrailing size={18} className="text-base-icon-color-secondary" /></div>
-                    )}
-                    {shortcut && (
-                        <div className="absolute right-2 pr-2 bg-kbd-bg-color text-kbd-text-color text-xs font-bold px-1.5 py-1 rounded-sm">{shortcut}</div>
-                    )}
-                    {actionAssociated && (
-                        <div
-                            className="absolute right-0 pr-2"
-                            onClick={actionAssociatedOnClick}
-                            style={{
-                                cursor: actionAssociatedOnClick ? 'pointer' : 'default',
-                            }}
-                        >
-                            {actionAssociated}
-                        </div>
-                    )}
-                </div>
+                {IconTrailing && (
+                    <div className="absolute right-0 pr-2"><IconTrailing size={18} className="text-base-icon-color-secondary" /></div>
+                )}
+                {shortcut && (
+                    <div className="absolute right-2 pr-2 bg-kbd-bg-color text-kbd-text-color text-xs font-bold px-1.5 py-1 rounded-sm">{shortcut}</div>
+                )}
+                {actionAssociated && (
+                    <div
+                        className="absolute right-0 pr-2"
+                        onClick={actionAssociatedOnClick}
+                        style={{
+                            cursor: actionAssociatedOnClick ? 'pointer' : 'default',
+                        }}
+                    >
+                        {actionAssociated}
+                    </div>
+                )}
             </div>
-        );
-    },
-);
+        </div>
+    )
+}
 InputText.displayName = 'InputText';
 
 export { InputText };

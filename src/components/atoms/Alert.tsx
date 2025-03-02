@@ -32,25 +32,22 @@ export type AlertProps = React.HTMLAttributes<HTMLDivElement> &
         action?: string;
     };
 
-const Alert = React.forwardRef<AlertProps>(
-    ({ className, type, Icon, title, content, action, ...props }, ref) => {
-        return (
-            <div
-                ref={ref}
-                role="alert"
-                className={cn(alertVariants({ type }), className, "flex flex-row gap-2.5")}
-                {...props}
-            >
-                {Icon ? <div className=""><Icon size={24} /></div> : null}
-                <div className="flex flex-col grow">
-                    <h5 className="font-bold">{title}</h5>
-                    <p>{content}</p>
-                </div>
-                {action ? <div className="flex"><Button label={action} type="secondary" size="md" /></div> : null}
+const Alert: React.FunctionComponent<AlertProps> = ({ className, type, Icon, title, content, action, ...props }) => {
+    return (
+        <div
+            role="alert"
+            className={cn(alertVariants({ type }), className, "flex flex-row gap-2.5")}
+            {...props}
+        >
+            {Icon ? <div className=""><Icon size={24} /></div> : null}
+            <div className="flex flex-col grow">
+                <h5 className="font-bold">{title}</h5>
+                <p>{content}</p>
             </div>
-        )
-    },
-);
+            {action ? <div className="flex"><Button label={action} type="secondary" size="md" /></div> : null}
+        </div>
+    )
+}
 
 Alert.displayName = 'Alert';
 export { Alert };

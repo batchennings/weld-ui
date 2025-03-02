@@ -21,20 +21,20 @@ const SelectVariants = cva(
         "disabled:text-button-text-color-outline-disabled",
         "focus:shadow-[0_0_0_4px_#bfdbfe]",
     ], {
-        variants: {
-            size: {
-                sm: ["text-sm", "px-2", "gap-1", "h-6"],
-                md: ["text-base", "px-3", "gap-2", "h-8"],
-                lg: ["text-lg", "px-4", "gap-2", "h-10"],
-            },
-        }
-    })
+    variants: {
+        size: {
+            sm: ["text-sm", "px-2", "gap-1", "h-6"],
+            md: ["text-base", "px-3", "gap-2", "h-8"],
+            lg: ["text-lg", "px-4", "gap-2", "h-10"],
+        },
+    }
+})
 export type SelectProps = VariantProps<typeof SelectVariants> & {
     content: string;
     placeholder: string;
     options: object;
 };
-export const Select = React.forwardRef<SelectProps>(({ content, size, placeholder, options, children, ...rest }, ref) => {
+export const Select: React.FunctionComponent<SelectProps> = ({ content, size, placeholder, options, children, ...rest }) => {
     return (
         <SelectPrimitive.Root>
             <SelectPrimitive.Trigger aria-label="Food" className={SelectVariants({ size })}>
@@ -49,7 +49,7 @@ export const Select = React.forwardRef<SelectProps>(({ content, size, placeholde
                         <SelectPrimitive.Group>
                             {options.map(option => (
                                 <>
-                                    <SelectItem value={option.value} details={option.details} detailsPosition="newline">{option.value}</SelectItem>
+                                    <SelectItem key={option.value} value={option.value} details={option.details} detailsPosition="newline">{option.value}</SelectItem>
                                 </>
                             ))}
                         </SelectPrimitive.Group>
@@ -59,7 +59,7 @@ export const Select = React.forwardRef<SelectProps>(({ content, size, placeholde
         </SelectPrimitive.Root>
 
     )
-})
+}
 export type SelectItemProps = React.HTMLAttributes<HTMLButtonElement> & {
     value: string;
     details?: string;
@@ -67,13 +67,12 @@ export type SelectItemProps = React.HTMLAttributes<HTMLButtonElement> & {
     pillValue?: string;
 }
 
-const SelectItem = React.forwardRef<SelectItemProps>(
-    ({ children, className, value, details, detailsPosition = "newline", ...props }, ref) => {
+const SelectItem: React.FunctionComponent<SelectItemProps> =
+    ({ children, className, value, details, detailsPosition = "newline", ...props }) => {
         return (
             <SelectPrimitive.Item
                 className={cn("SelectItem flex flex-row px-3 py-2 justify-between", className)}
                 {...props}
-                ref={ref}
                 value={value}
             >
                 <div className="flex flex-col">
@@ -85,8 +84,7 @@ const SelectItem = React.forwardRef<SelectItemProps>(
                 </SelectPrimitive.ItemIndicator>
             </SelectPrimitive.Item>
         )
-    },
-);
+    }
 //const SelectItem = React.forwardRef<SelectItemProps>(({ value, children, ...rest }, ref) => {
 //    <SelectPrimitive.Item value={value} className="" ref={ref}>
 //        <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
