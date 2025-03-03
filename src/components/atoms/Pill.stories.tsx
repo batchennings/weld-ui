@@ -7,7 +7,7 @@ import { Pill } from './Pill';
 const meta: Meta<typeof Pill> = {
     title: "Components/Pill",
     parameters: {
-        layout: "padded"
+        layout: "centered"
     },
     component: Pill,
     argTypes: {

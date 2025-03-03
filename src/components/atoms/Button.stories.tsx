@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
 
 import { Button } from './Button';
-import { Plus, Trash, Sliders } from "@/icons"
+import { PlusIcon, ToolsIcon, TrashIcon } from '@primer/octicons-react';
 
 const meta: Meta<typeof Button> = {
     component: Button,
@@ -22,7 +22,6 @@ const meta: Meta<typeof Button> = {
             control: 'select',
             options: ["primary", "secondary", "destructive", "link", "ghost"]
         },
-        icon: { control: 'object' },
         onClick: { control: 'object'}
     },
     args: { onClick: fn() },
@@ -43,7 +42,7 @@ export const PrimaryIcon: Story = {
         type: "primary",
         label: "Label",
         size: "md",
-        icon: <Plus />
+        Icon: PlusIcon
     }
 }
 export const Destructive: Story = {
@@ -51,7 +50,7 @@ export const Destructive: Story = {
         type: "destructive",
         label: "Supprimer",
         size: "md",
-        icon: <Trash />
+        Icon: TrashIcon
     }
 }
 export const Secondary: Story = {
@@ -59,7 +58,7 @@ export const Secondary: Story = {
         type: "secondary",
         label: "Réglages",
         size: "md",
-        icon: <Sliders />
+        Icon: ToolsIcon
     }
 }
 export const OnDark: Story = {
@@ -73,6 +72,6 @@ export const OnDark: Story = {
         type: "secondary",
         label: "Réglages",
         size: "md",
-        icon: <Sliders />
+        Icon: ToolsIcon
     }
 };
