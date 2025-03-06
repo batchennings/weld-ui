@@ -13,7 +13,7 @@ const buttonVariants = cva("button transition justify-start items-center rounded
                 "hover:bg-button-bg-color-filled-hover",
                 "disabled:bg-button-bg-color-filled-disabled",
                 "disabled:text-button-text-color-filled-disabled",
-                "focus:shadow-[0_0_0_4px_#bfdbfe]",
+                "focus:shadow-[0_0_0_4px_rgba(37,99,235,0.25)]",
             ],
             secondary: [
                 "bg-none",
@@ -25,7 +25,7 @@ const buttonVariants = cva("button transition justify-start items-center rounded
                 "hover:text-button-border-color-outline-hover",
                 "disabled:border-button-border-color-outline-disabled",
                 "disabled:text-button-text-color-outline-disabled",
-                "focus:shadow-[0_0_0_4px_#bfdbfe]",
+                "focus:shadow-[0_0_0_4px_rgba(37,99,235,0.25)]",
             ],
             destructive: [
                 "bg-button-bg-color-destructive",
@@ -34,7 +34,7 @@ const buttonVariants = cva("button transition justify-start items-center rounded
                 "hover:bg-button-bg-color-destructive-hover",
                 "disabled:bg-button-bg-color-destructive-disabled",
                 "disabled:text-button-text-color-destructive-disabled",
-                "focus:shadow-[0_0_0_4px_#FEE2E2]"
+                "focus:shadow-[0_0_0_4px_rgba(239,68,68,0.25)]",
             ],
             ghost: [
                 "bg-button-bg-color-outline",
@@ -46,10 +46,10 @@ const buttonVariants = cva("button transition justify-start items-center rounded
                 "hover:text-button-border-color-outline-hover",
                 "disabled:border-button-border-color-outline-disabled",
                 "disabled:text-button-text-color-outline-disabled",
-                "focus:shadow-[0_0_0_4px_#bfdbfe]",
+                "focus:shadow-[0_0_0_4px_rgba(37,99,235,0.25)]",
             ],
             link: [
-                "focus:shadow-[0_0_0_4px_#bfdbfe]",
+                "focus:shadow-[0_0_0_4px_rgba(37,99,235,0.25)]",
             ],
         },
         size: {

@@ -4,7 +4,7 @@ import { VariantProps, cva } from 'class-variance-authority';
 import { IconProps } from '@/types/icons'
 
 const inputVariants = cva(
-    'px-2.5 bg-form-bg-color rounded-md focus:shadow-[0_0_0_4px_rgba(18,0,108,0.22)] focus:border-form-border-color-focus border disabled:cursor-not-allowed border-form-border-color justify-start items-center gap-2 inline-flex focus:outline-none disabled:bg-form-bg-color-disabled text-base transition ease-out',
+    'px-2.5 bg-form-bg-color rounded-md focus:shadow-[0_0_0_4px_rgba(37,99,235,0.25)] focus:border-form-border-color-focus border disabled:cursor-not-allowed border-form-border-color justify-start items-center gap-2 inline-flex focus:outline-none disabled:bg-form-bg-color-disabled text-base transition ease-out',
     {
         variants: {
             variant: {

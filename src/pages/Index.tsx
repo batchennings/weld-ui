@@ -2,6 +2,7 @@ import { Button } from "@/components/atoms/Button"
 import { Alert } from "@/components/atoms/Alert"
 import { Pill } from "@/components/atoms/Pill"
 import { Table } from "@/components/organisms/Table";
+import { SwitchGroup } from "@/components/atoms/SwitchGroup"
 
 import { Pen, Plus, PlusCircle, Trash, Info } from "@/icons"
 import { CheckIcon, InfoIcon, AlertIcon, DotFillIcon, SearchIcon, XIcon } from '@primer/octicons-react'
@@ -13,13 +14,20 @@ import { selectData } from "@/mock/select"
 import { InputText } from "@/components/atoms/InputText";
 import { Component } from "@/components/atoms/Component";
 import { Select } from "@/components/atoms/Select";
+import { Switch } from "@/components/atoms/Switch";
+import { useState } from "react";
 
 const Index = () => {
+    const [darkMode, setDarkMode] = useState(false)
+    function changeSwitchState(darkState:boolean){
+        setDarkMode(darkState)
+    }
     function clickButton() {
         console.log("Button clicked");
     }
     return (
-        <div className="m-8 flex flex-col gap-4">
+        <div className={"p-8 h-full flex flex-col gap-4 bg-base-bg-color-regular transition " + (darkMode ? "dark" : "")}>
+                <SwitchGroup id="darkSelector" label="Dark mode" description="Modifier le thème de l'interface" onCheckedChange={changeSwitchState} />
             <Component Icon={InfoIcon} content="Template component" type="main" />
             <div className="flex flex-row w-fit flex-wrap gap-4">
                 <Button label="Bouton simple" type="primary" size="md" onClick={clickButton} />
@@ -45,7 +53,7 @@ const Index = () => {
 
             <div className="flex flex-row gap-1">
                 <InputText placeholder="Rechercher" size={24} IconHeading={SearchIcon} shortcut="Ctrl + K" />
-                <Select size="md" placeholder="Choisir" options={selectData}/>
+                <Select size="md" placeholder="Choisir" options={selectData} />
                 <Button label="Modifier" type="secondary" Icon={Pen} size="md" />
             </div>
             <div className="">

@@ -19,16 +19,16 @@ const SelectVariants = cva(
         "hover:text-button-border-color-outline-hover",
         "disabled:border-button-border-color-outline-disabled",
         "disabled:text-button-text-color-outline-disabled",
-        "focus:shadow-[0_0_0_4px_#bfdbfe]",
+        "focus:shadow-[0_0_0_4px_rgba(37,99,235,0.25)]",
     ], {
-    variants: {
-        size: {
-            sm: ["text-sm", "px-2", "gap-1", "h-6"],
-            md: ["text-base", "px-3", "gap-2", "h-8"],
-            lg: ["text-lg", "px-4", "gap-2", "h-10"],
-        },
-    }
-})
+        variants: {
+            size: {
+                sm: ["text-sm", "px-2", "gap-1", "h-6"],
+                md: ["text-base", "px-3", "gap-2", "h-8"],
+                lg: ["text-lg", "px-4", "gap-2", "h-10"],
+            },
+        }
+    })
 export type SelectProps = VariantProps<typeof SelectVariants> & {
     content: string;
     placeholder: string;
