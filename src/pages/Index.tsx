@@ -27,7 +27,7 @@ const Index = () => {
         <div className={"p-8 h-full flex flex-col gap-4 bg-base-bg-color-regular transition " + (darkMode ? "dark" : "")}>
             <Switch id="darkSelector" label="Dark mode" description="Modifier le thème de l'interface" onCheckedChange={changeSwitchState} />
             <Component Icon={InfoIcon} content="Template component" type="main" />
-            <div className="flex flex-row w-fit flex-wrap gap-4">
+            <div className="flex flex-row w-fit flex-wrap gap-2">
                 <Button label="Bouton simple" type="primary" size="md" onClick={clickButton} />
                 <Button label="Ajouter un membre" type="primary" Icon={Plus} size="sm" />
                 <Button label="Modifier" type="secondary" Icon={Pen} size="sm" />
@@ -39,7 +39,7 @@ const Index = () => {
             <div>
                 <Alert content="Ce message a de l'importance" variant="warning" title="Titre" action="Voir la page" Icon={InfoIcon} />
             </div>
-            <div className="flex flex-row gap-4">
+            <div className="flex flex-row gap-2">
                 <Pill type="red" style="filled" content="Label" Icon={AlertIcon} />
                 <Pill type="red" style="light" content="Label" Icon={AlertIcon} />
                 <Pill type="red" style="stroke" content="Label" Icon={AlertIcon} />
@@ -48,8 +48,23 @@ const Index = () => {
             <div className="flex flex-row gap-4">
                 <InputText placeholder="Rechercher" size="md" length="full" IconHeading={SearchIcon} shortcut="Ctrl + K" />
             </div>
-            <div>
-                <InputText placeholder="" size="md" length="md" label="Numéro de dossier" description="Si vous avez oublié ce numéro, vous pouvez le retrouver sur la fiche envoyée lors de votre inscription" id="myInput"/>
+            <div className="flex flex-row gap-2">
+                <InputText
+                    placeholder=""
+                    size="md"
+                    length="md"
+                    label="Numéro de dossier"
+                    description="Si vous avez oublié ce numéro, vous pouvez le retrouver sur la fiche envoyée lors de votre inscription"
+                    id="myInput"/>
+                <InputText
+                    placeholder=""
+                    size="md"
+                    length="md"
+                    label="Numéro de dossier"
+                    disabled
+                    description="Si vous avez oublié ce numéro, vous pouvez le retrouver sur la fiche envoyée lors de votre inscription"
+                    id="myInput2"
+                    value="983312944"/>
             </div>
 
             <div className="flex flex-row gap-1">

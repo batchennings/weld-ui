@@ -1,17 +1,23 @@
+import { IconProps } from "@primer/octicons-react";
 import { cva, type VariantProps } from "class-variance-authority";
+import { Pill } from "../atoms/Pill";
 
 export const TableHeaderCell = ({ content, ...rest }: Props) => {
     return (
-        <th className="p-3 border-b text-gray-500 text-left">{content}</th>
+        <th className="p-3 border-b-2 border-table-border-color text-table-text-color-secondary text-left">{content}</th>
     );
 };
 
-const bodyCell = cva("border-b p-4", {
+const bodyCellVariants = cva("border-b p-4 border-table-border-color", {
     variants: {
         priority: {
-            secondary: ["text-gray-500"],
-            primary: ["text-gray-900"],
+            primary: ["text-table-text-color-primary"],
+            secondary: ["text-table-text-color-secondary"],
         },
+        dataType: {
+            text: "text-left",
+            numeric: "text-right font-mono",
+        }
     },
     compoundVariants: [
         {
@@ -30,9 +36,22 @@ const bodyCell = cva("border-b p-4", {
         type: "primary",
     },
 });
-export const TableBodyCell: React.FunctionComponent<T> = ({ content, priority, ...rest }: Props) => {
-    console.log(content.props)
+export type TableBodyCellProps = React.HTMLAttributes<HTMLTableCellElement> & VariantProps<typeof bodyCellVariants> & {
+    content?: string;
+    priority?: string;
+    dataType: "text" | "numeric" | "pill" | "action" | "checkbox";
+    icon?: React.ComponentType<IconProps>;
+    options?: object;
+    buttonAction?: string;
+
+}
+export const TableBodyCell: React.FunctionComponent<TableBodyCellProps> = ({ content, priority, dataType, ...rest }) => {
+    //console.log(content.props)
     return (
-        <td className={bodyCell({ priority })} >{content}</td>
+        <td className={bodyCellVariants({ priority, dataType })} >
+            {dataType == "text" && content }
+            {dataType == "numeric" && content }
+            {dataType == "pill" && <Pill type="green" style="light" content={content}/>}
+        </td>
     );
 };

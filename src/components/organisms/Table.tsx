@@ -16,22 +16,37 @@ export const Table = ({columns, data } : Props) => {
                 <thead>
                     {table.getHeaderGroups().map(headerGroup => (
                         <tr key={headerGroup.id}>
+                            <TableHeaderCell
+                                dataType="checkbox"
+                            />
                             {headerGroup.headers.map(header => (
-                                <>
-                                    <TableHeaderCell key={ header.id } content={flexRender(header.column.columnDef.header, header.getContext())} />
-                                </>
+                                <TableHeaderCell
+                                    key={ header.id }
+                                    content={flexRender(header.column.columnDef.header, header.getContext())}
+                                />
                             ))}
+                            <TableHeaderCell
+                                dataType="ation"
+                            />
                         </tr>
                     ))}
                 </thead>
                 <tbody>
                     {table.getRowModel().rows.map(row => (
                         <tr key={row.id}>
+                            <TableBodyCell
+                                dataType="checkbox"
+                                />
                             {row.getVisibleCells().map(cell => (
-                                <>
-                                    <TableBodyCell key={cell.id} content={flexRender(cell.column.columnDef.cell, cell.getContext())} priority={cell.column.columnDef.priority}/>
-                                </>
+                                <TableBodyCell
+                                    key={cell.id}
+                                    content={flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                    dataType={cell.column.columnDef.dataType}
+                                    priority={cell.column.columnDef.priority}/>
                             ))}
+                            <TableBodyCell
+                                dataType="action"
+                                />
                         </tr>
                     ))}
                 </tbody>

@@ -5,11 +5,14 @@ import { IconProps } from '@/types/icons'
 import { Label } from '@/components/atoms/Label';
 
 const inputVariants = cva(
-    'px-2.5 bg-form-bg-color rounded-md focus:shadow-[0_0_0_4px_rgba(37,99,235,0.25)] focus:border-form-border-color-focus border disabled:cursor-not-allowed border-form-border-color justify-start items-center gap-2 inline-flex focus:outline-none disabled:bg-form-bg-color-disabled text-base transition ease-out w-full',
+    'px-2.5 bg-form-bg-color rounded-md focus:shadow-[0_0_0_4px_rgba(37,99,235,0.25)] focus:border-form-border-color-focus border disabled:cursor-not-allowed border-form-border-color justify-start items-center gap-2 inline-flex focus:outline-none disabled:bg-form-bg-color-disabled text-base text-base-text-color-primary transition ease-out w-full',
     {
         variants: {
             variant: {
                 default: '',
+            },
+            disabled: {
+                true: "text-table-text-color-secondary"
             },
             isError: {
                 true: "",
@@ -29,21 +32,21 @@ const inputVariants = cva(
 );
 
 export type InputTextProps = React.InputHTMLAttributes<HTMLInputElement> &
-    VariantProps<typeof inputVariants> & {
-        IconHeading?: React.ComponentType<IconProps>;
-        IconTrailing?: React.ComponentType<IconProps>;
-        actionAssociated?: React.ReactNode;
-        actionAssociatedOnClick?: () => void;
-        maxLength?: number;
-        onInput?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-        placeholder?: string;
-        size?: string;
-        length?: string;
-        shortcut?: string;
-        label?: string;
+VariantProps<typeof inputVariants> & {
+    IconHeading?: React.ComponentType<IconProps>;
+    IconTrailing?: React.ComponentType<IconProps>;
+    actionAssociated?: React.ReactNode;
+    actionAssociatedOnClick?: () => void;
+    maxLength?: number;
+    onInput?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    placeholder?: string;
+    size?: string;
+    length?: string;
+    shortcut?: string;
+    label?: string;
     isError?: string;
-        description?: string;
-    };
+    description?: string;
+};
 const InputText: React.FunctionComponent<InputTextProps> = ({
     className,
     variant,
@@ -76,8 +79,13 @@ const InputText: React.FunctionComponent<InputTextProps> = ({
             }
         )}
         >
+
             {label && (
-                <Label htmlFor={id} className="">{label}</Label>
+                <Label htmlFor={id} className={cn(
+                    {
+                        'text-base-text-color-muted' : props.disabled
+                    }
+                )}>{label}</Label>
             )}
             <div className="flex items-center gap-2 relative w-full">
                 {IconHeading && (
@@ -95,13 +103,15 @@ const InputText: React.FunctionComponent<InputTextProps> = ({
                             'pr-8': actionAssociated,
                             'lr-8': IconTrailing,
                         },
+                        {
+                            'text-base-text-color-muted' : props.disabled
+                        }
                     )}
                     maxLength={maxLength}
                     onInput={onInput}
                     id={id}
                     {...props}
                 />
-
                 {IconTrailing && (
                     <div className="absolute right-0 pr-2"><IconTrailing size={18} className="text-base-icon-color-secondary" /></div>
                 )}
@@ -121,7 +131,12 @@ const InputText: React.FunctionComponent<InputTextProps> = ({
                 )}
             </div>
             {description && (
-                <div className="text-base-text-color-secondary text-sm">{description}</div>
+                <div className={cn(
+                    "text-base-text-color-secondary text-sm",
+                    {
+                        "text-base-text-color-muted" : props.disabled
+                    }
+                )}>{description}</div>
             )}
         </div>
     )
