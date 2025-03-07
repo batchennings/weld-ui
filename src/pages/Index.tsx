@@ -2,11 +2,9 @@ import { Button } from "@/components/atoms/Button"
 import { Alert } from "@/components/atoms/Alert"
 import { Pill } from "@/components/atoms/Pill"
 import { Table } from "@/components/organisms/Table";
-import { SwitchGroup } from "@/components/atoms/SwitchGroup"
 
-import { Pen, Plus, PlusCircle, Trash, Info } from "@/icons"
-import { CheckIcon, InfoIcon, AlertIcon, DotFillIcon, SearchIcon, XIcon } from '@primer/octicons-react'
-import Dropdown from "@/components/atoms/Dropdown";
+import { Pen, Plus, Trash } from "@/icons"
+import { InfoIcon, AlertIcon, DotFillIcon, SearchIcon } from '@primer/octicons-react'
 
 // mock data
 import { tableData, tableColumns } from "@/mock/table"
@@ -19,7 +17,7 @@ import { useState } from "react";
 
 const Index = () => {
     const [darkMode, setDarkMode] = useState(false)
-    function changeSwitchState(darkState:boolean){
+    function changeSwitchState(darkState: boolean) {
         setDarkMode(darkState)
     }
     function clickButton() {
@@ -27,7 +25,7 @@ const Index = () => {
     }
     return (
         <div className={"p-8 h-full flex flex-col gap-4 bg-base-bg-color-regular transition " + (darkMode ? "dark" : "")}>
-                <SwitchGroup id="darkSelector" label="Dark mode" description="Modifier le thème de l'interface" onCheckedChange={changeSwitchState} />
+            <Switch id="darkSelector" label="Dark mode" description="Modifier le thème de l'interface" onCheckedChange={changeSwitchState} />
             <Component Icon={InfoIcon} content="Template component" type="main" />
             <div className="flex flex-row w-fit flex-wrap gap-4">
                 <Button label="Bouton simple" type="primary" size="md" onClick={clickButton} />
@@ -49,6 +47,9 @@ const Index = () => {
             </div>
             <div className="flex flex-row gap-4">
                 <InputText placeholder="Rechercher" size={24} IconHeading={SearchIcon} shortcut="Ctrl + K" />
+            </div>
+            <div>
+                <InputText placeholder="" size={24} label="Numéro de dossier" description="Si vous avez oublié ce numéro, vous pouvez le retrouver sur la fiche envoyée lors de votre inscription" id="myInput"/>
             </div>
 
             <div className="flex flex-row gap-1">

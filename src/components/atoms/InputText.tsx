@@ -2,6 +2,7 @@ import * as React from 'react';
 import { cn } from '@/lib/utils';
 import { VariantProps, cva } from 'class-variance-authority';
 import { IconProps } from '@/types/icons'
+import { Label } from '@/components/atoms/Label';
 
 const inputVariants = cva(
     'px-2.5 bg-form-bg-color rounded-md focus:shadow-[0_0_0_4px_rgba(37,99,235,0.25)] focus:border-form-border-color-focus border disabled:cursor-not-allowed border-form-border-color justify-start items-center gap-2 inline-flex focus:outline-none disabled:bg-form-bg-color-disabled text-base transition ease-out',
@@ -37,10 +38,13 @@ export type InputTextProps = React.InputHTMLAttributes<HTMLInputElement> &
         placeholder?: string;
         size: number;
         shortcut?: string;
+        label?: string;
+        description?: string;
     };
 const InputText: React.FunctionComponent<InputTextProps> = ({
     className,
     variant,
+    id,
     type,
     variantSize,
     isError,
@@ -51,13 +55,17 @@ const InputText: React.FunctionComponent<InputTextProps> = ({
     maxLength,
     size,
     shortcut,
+    label,
+    description,
     onInput,
     ...props
 }) => {
     return (
         <div className="flex-col justify-start items-start gap-1 inline-flex">
+            {label && (
+                <Label htmlFor={id} className="">{label}</Label>
+            )}
             <div className="flex items-center gap-2 relative">
-
                 {IconHeading && (
                     <div className="absolute left-0 pl-2">
                         <IconHeading size={18} className="text-base-icon-color-secondary" />
@@ -77,6 +85,7 @@ const InputText: React.FunctionComponent<InputTextProps> = ({
                     )}
                     maxLength={maxLength}
                     onInput={onInput}
+                    id={id}
                     {...props}
                 />
 
@@ -98,6 +107,9 @@ const InputText: React.FunctionComponent<InputTextProps> = ({
                     </div>
                 )}
             </div>
+            {description && (
+                <div className="text-base-text-color-secondary text-sm w-full">{description}</div>
+            )}
         </div>
     )
 }

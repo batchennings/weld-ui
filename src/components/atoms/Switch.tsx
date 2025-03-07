@@ -1,6 +1,7 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import React from 'react';
 import { Switch as SwitchPrimitive } from "radix-ui";
+import { Label } from "@/components/atoms/Label";
 
 const SwitchVariants = cva(
     [
@@ -16,11 +17,19 @@ const SwitchVariants = cva(
     }
 })
 export type SwitchProps = React.HTMLAttributes<HTMLFormElement> & VariantProps<typeof SwitchVariants> & {
+    label?: string;
+    description?: string;
 };
-export const Switch: React.FunctionComponent<SwitchProps> = ({ id, onCheckedChange }) => {
+export const Switch: React.FunctionComponent<SwitchProps> = ({ id, label, description, onCheckedChange, ...props }) => {
     return (
-        <SwitchPrimitive.Root className={SwitchVariants()} id={id} onCheckedChange={onCheckedChange}>
-            <SwitchPrimitive.Thumb className="SwitchThumb block size-3.5 translate-x-1 rounded-full bg-white transition-transform duration-100 will-change-transform data-[state=checked]:translate-x-3.5" />
-        </SwitchPrimitive.Root>
+        <div className="flex flex-row gap-3">
+            <SwitchPrimitive.Root className={SwitchVariants()} id={id} onCheckedChange={onCheckedChange}>
+                <SwitchPrimitive.Thumb className="SwitchThumb block size-3.5 translate-x-1 rounded-full bg-white transition-transform duration-100 will-change-transform data-[state=checked]:translate-x-3.5" />
+            </SwitchPrimitive.Root>
+            <div className="flex flex-col">
+                <Label htmlFor={id}>{label}</Label>
+                <div className="text-base-text-color-secondary">{description}</div>
+            </div>
+        </div>
     )
 }
