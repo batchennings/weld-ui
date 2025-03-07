@@ -46,14 +46,14 @@ const Index = () => {
                 <Pill type="blue" style="light" content="Label" size="sm" Icon={DotFillIcon} />
             </div>
             <div className="flex flex-row gap-4">
-                <InputText placeholder="Rechercher" size={24} IconHeading={SearchIcon} shortcut="Ctrl + K" />
+                <InputText placeholder="Rechercher" size="md" length="full" IconHeading={SearchIcon} shortcut="Ctrl + K" />
             </div>
             <div>
-                <InputText placeholder="" size={24} label="Numéro de dossier" description="Si vous avez oublié ce numéro, vous pouvez le retrouver sur la fiche envoyée lors de votre inscription" id="myInput"/>
+                <InputText placeholder="" size="md" length="md" label="Numéro de dossier" description="Si vous avez oublié ce numéro, vous pouvez le retrouver sur la fiche envoyée lors de votre inscription" id="myInput"/>
             </div>
 
             <div className="flex flex-row gap-1">
-                <InputText placeholder="Rechercher" size={24} IconHeading={SearchIcon} shortcut="Ctrl + K" />
+                <InputText placeholder="Rechercher" size="md" length="md" IconHeading={SearchIcon} shortcut="Ctrl + K" />
                 <Select size="md" placeholder="Choisir" options={selectData} />
                 <Button label="Modifier" type="secondary" Icon={Pen} size="md" />
             </div>

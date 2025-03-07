@@ -5,7 +5,7 @@ import { IconProps } from '@/types/icons'
 import { Label } from '@/components/atoms/Label';
 
 const inputVariants = cva(
-    'px-2.5 bg-form-bg-color rounded-md focus:shadow-[0_0_0_4px_rgba(37,99,235,0.25)] focus:border-form-border-color-focus border disabled:cursor-not-allowed border-form-border-color justify-start items-center gap-2 inline-flex focus:outline-none disabled:bg-form-bg-color-disabled text-base transition ease-out',
+    'px-2.5 bg-form-bg-color rounded-md focus:shadow-[0_0_0_4px_rgba(37,99,235,0.25)] focus:border-form-border-color-focus border disabled:cursor-not-allowed border-form-border-color justify-start items-center gap-2 inline-flex focus:outline-none disabled:bg-form-bg-color-disabled text-base transition ease-out w-full',
     {
         variants: {
             variant: {
@@ -15,14 +15,15 @@ const inputVariants = cva(
                 true: "",
                 false: "",
             },
-            variantSize: {
-                lg: 'p-3.5',
+            size: {
+                sm: 'p-2 h-6',
                 md: 'p-2.5 h-8',
+                lg: 'p-3.5',
             },
         },
         defaultVariants: {
             variant: 'default',
-            variantSize: 'md',
+            size: 'md',
         },
     },
 );
@@ -36,9 +37,11 @@ export type InputTextProps = React.InputHTMLAttributes<HTMLInputElement> &
         maxLength?: number;
         onInput?: (event: React.ChangeEvent<HTMLInputElement>) => void;
         placeholder?: string;
-        size: number;
+        size?: string;
+        length?: string;
         shortcut?: string;
         label?: string;
+    isError?: string;
         description?: string;
     };
 const InputText: React.FunctionComponent<InputTextProps> = ({
@@ -46,13 +49,13 @@ const InputText: React.FunctionComponent<InputTextProps> = ({
     variant,
     id,
     type,
-    variantSize,
     isError,
     IconHeading,
     IconTrailing,
     actionAssociated,
     actionAssociatedOnClick,
     maxLength,
+    length,
     size,
     shortcut,
     label,
@@ -61,11 +64,22 @@ const InputText: React.FunctionComponent<InputTextProps> = ({
     ...props
 }) => {
     return (
-        <div className="flex-col justify-start items-start gap-1 inline-flex">
+        <div className={cn(
+            "flex-col justify-start items-start gap-1 inline-flex",
+            {
+                'w-full' : (length == 'full'),
+                'w-100' : (length == 'xl'),
+                'w-75' : (length == 'lg'),
+                'w-25' : (length == 'sm'),
+                'w-10' : (length == 'xs'),
+                'w-50' : (length == 'md'),
+            }
+        )}
+        >
             {label && (
                 <Label htmlFor={id} className="">{label}</Label>
             )}
-            <div className="flex items-center gap-2 relative">
+            <div className="flex items-center gap-2 relative w-full">
                 {IconHeading && (
                     <div className="absolute left-0 pl-2">
                         <IconHeading size={18} className="text-base-icon-color-secondary" />
@@ -73,9 +87,8 @@ const InputText: React.FunctionComponent<InputTextProps> = ({
                 )}
                 <input
                     type={type}
-                    size={size}
                     className={cn(
-                        inputVariants({ variant, variantSize }),
+                        inputVariants({ variant, size }),
                         className,
                         {
                             'pl-8': IconHeading,
@@ -108,7 +121,7 @@ const InputText: React.FunctionComponent<InputTextProps> = ({
                 )}
             </div>
             {description && (
-                <div className="text-base-text-color-secondary text-sm w-full">{description}</div>
+                <div className="text-base-text-color-secondary text-sm">{description}</div>
             )}
         </div>
     )
