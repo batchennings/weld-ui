@@ -15,6 +15,7 @@ import { Select } from "@/components/atoms/Select";
 import { Switch } from "@/components/atoms/Switch";
 import { CheckboxGroup } from "@/components/atoms/CheckboxGroup";
 import { RadioGroup } from "@/components/atoms/RadioGroup";
+import { Dropdown } from "@/components/atoms/Dropdown";
 import { useState } from "react";
 
 const Index = () => {
@@ -110,6 +111,15 @@ const Index = () => {
                 <InputText placeholder="Rechercher" size="md" length="md" IconHeading={SearchIcon} shortcut="Ctrl + K" />
                 <Select size="md" placeholder="Choisir" options={selectData} content="" />
                 <Button label="Modifier" type="secondary" Icon={Pen} size="md" />
+                <Dropdown
+                    triggerLabel="Actions"
+                    items={[
+                        { label: 'Open', shortcut: '⌘O', Icon: Pen },
+                        { label: 'Rename', shortcut: 'F2', Icon: SearchIcon},
+                        { type: 'separator' },
+                        { label: 'Delete', destructive: false, shortcut: '⌘⌫' },
+                    ]}
+                />
             </div>
             <div className="">
                 <Table data={tableData} columns={tableColumns} />
