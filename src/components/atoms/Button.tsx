@@ -72,7 +72,7 @@ const buttonVariants = cva("button transition justify-start items-center rounded
 });
 
 export type ButtonProps = React.HTMLAttributes<HTMLButtonElement> & VariantProps<typeof buttonVariants> & {
-    label: string;
+    label?: string;
     Icon?: React.ComponentType<IconProps>;
 }
 

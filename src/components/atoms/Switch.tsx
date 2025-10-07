@@ -19,6 +19,7 @@ const SwitchVariants = cva(
 export type SwitchProps = React.HTMLAttributes<HTMLFormElement> & VariantProps<typeof SwitchVariants> & {
     label?: string;
     description?: string;
+    onCheckedChange?: (checked: boolean) => void;
 };
 export const Switch: React.FunctionComponent<SwitchProps> = ({ id, label, description, onCheckedChange, ...props }) => {
     return (
