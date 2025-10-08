@@ -74,11 +74,12 @@ const buttonVariants = cva("button transition justify-start items-center rounded
 export type ButtonProps = React.HTMLAttributes<HTMLButtonElement> & VariantProps<typeof buttonVariants> & {
     label?: string;
     Icon?: React.ComponentType<IconProps>;
+    disabled?: boolean;
 }
 
-export const Button: React.FunctionComponent<ButtonProps> = ({ label, Icon, onClick, type, size, ...rest }) => {
+export const Button: React.FunctionComponent<ButtonProps> = ({ label, Icon, onClick, type, size, disabled, ...rest }) => {
     return (
-        <button {...rest} className={buttonVariants({ type, size })} onClick={onClick}>
+        <button {...rest} className={buttonVariants({ type, size })} onClick={onClick} disabled={disabled}>
             {Icon && <Icon />}
             {label}
         </button>
