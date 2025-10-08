@@ -66,22 +66,30 @@ export type DropdownItem = {
 
 export type DropdownProps = React.HTMLAttributes<HTMLDivElement> &
     VariantProps<typeof triggerVariants> & {
-        triggerLabel: string;
+        triggerLabel?: string;
+        triggerElement?: React.ReactNode;
         items: DropdownItem[];
     };
 
 const Dropdown: React.FunctionComponent<DropdownProps> = ({
     className,
     triggerLabel,
+    triggerElement,
     items,
     size,
     ...props
 }) => {
     return (
         <DropdownPrimitive.Root>
-            <DropdownPrimitive.Trigger className={cn(triggerVariants({ size }), className)} {...props}>
-                {triggerLabel}
-            </DropdownPrimitive.Trigger>
+            {triggerElement ? (
+                <DropdownPrimitive.Trigger asChild>
+                    {triggerElement}
+                </DropdownPrimitive.Trigger>
+            ) : (
+                <DropdownPrimitive.Trigger className={cn(triggerVariants({ size }), className)}>
+                    {triggerLabel}
+                </DropdownPrimitive.Trigger>
+            )}
             <DropdownPrimitive.Portal>
                 <DropdownPrimitive.Content className={contentVariants()} sideOffset={6} align="start">
                     {items.map((it, idx) => {

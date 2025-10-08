@@ -33,10 +33,12 @@ export type SelectProps = VariantProps<typeof SelectVariants> & {
     content: string;
     placeholder: string;
     options: object;
+    onValueChange?: (value: string) => void;
+    value?: string;
 };
-export const Select: React.FunctionComponent<SelectProps> = ({ content, size, placeholder, options, children, ...rest }) => {
+export const Select: React.FunctionComponent<SelectProps> = ({ content, size, placeholder, options, children, onValueChange, value, ...rest }) => {
     return (
-        <SelectPrimitive.Root>
+        <SelectPrimitive.Root value={value} onValueChange={onValueChange}>
             <SelectPrimitive.Trigger aria-label="Food" className={SelectVariants({ size })}>
                 <SelectPrimitive.Value className="text-base-accent-400" placeholder={placeholder} >{children}</SelectPrimitive.Value>
                 <SelectPrimitive.Icon >
