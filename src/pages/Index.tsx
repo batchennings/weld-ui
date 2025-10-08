@@ -7,7 +7,7 @@ import { Pen, Plus, Trash } from "@/icons"
 import { InfoIcon, AlertIcon, DotFillIcon, SearchIcon } from '@primer/octicons-react'
 
 // mock data
-import { tableData, tableColumns } from "@/mock/table"
+import { tableData, tableColumns, tableActions } from "@/mock/table"
 import { selectData } from "@/mock/select"
 import { InputText } from "@/components/atoms/InputText";
 import { Component } from "@/components/atoms/Component";
@@ -122,7 +122,7 @@ const Index = () => {
                 />
             </div>
             <div className="">
-                <Table data={tableData} columns={tableColumns} />
+                <Table data={tableData} columns={tableColumns} actions={tableActions}/>
             </div>
         </div>
     );
