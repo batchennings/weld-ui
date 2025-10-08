@@ -3,8 +3,9 @@ import React from 'react';
 import { Select as SelectPrimitive } from "radix-ui";
 import { ChevronDownIcon, CheckIcon, InfoIcon, AlertIcon, DotFillIcon, SearchIcon, XIcon } from '@primer/octicons-react'
 import { cn } from "@/lib/utils";
-import { SelectItemProps } from "@radix-ui/react-select";
+import { SelectItemProps as RadixSelectItemProps } from "@radix-ui/react-select";
 import { IconProps } from "@/types/icons";
+import { ListItem } from "./ListItem";
 
 const SelectVariants = cva(
     [
@@ -32,15 +33,15 @@ const SelectVariants = cva(
 export type SelectProps = VariantProps<typeof SelectVariants> & {
     content: string;
     placeholder: string;
-    options: object;
+    options: Array<{ value: string; details?: string }>;
     onValueChange?: (value: string) => void;
     value?: string;
 };
-export const Select: React.FunctionComponent<SelectProps> = ({ content, size, placeholder, options, children, onValueChange, value, ...rest }) => {
+export const Select: React.FunctionComponent<SelectProps> = ({ content, size, placeholder, options, onValueChange, value, ...rest }) => {
     return (
         <SelectPrimitive.Root value={value} onValueChange={onValueChange}>
             <SelectPrimitive.Trigger aria-label="Food" className={SelectVariants({ size })}>
-                <SelectPrimitive.Value className="text-base-accent-400" placeholder={placeholder} >{children}</SelectPrimitive.Value>
+                <SelectPrimitive.Value className="text-base-accent-400" placeholder={placeholder} />
                 <SelectPrimitive.Icon >
                     <ChevronDownIcon />
                 </SelectPrimitive.Icon>
@@ -62,7 +63,7 @@ export const Select: React.FunctionComponent<SelectProps> = ({ content, size, pl
 
     )
 }
-export type SelectItemProps = React.HTMLAttributes<HTMLButtonElement> & {
+export type SelectItemProps = RadixSelectItemProps & {
     value: string;
     details?: string;
     detailsPosition?: "newline" | "inlineAfter" | "inlineBefore";
@@ -73,17 +74,17 @@ const SelectItem: React.FunctionComponent<SelectItemProps> =
     ({ children, className, value, details, detailsPosition = "newline", ...props }) => {
         return (
             <SelectPrimitive.Item
-                className={cn("SelectItem flex flex-row px-3 py-2 justify-between", className)}
+                className={cn("SelectItem", className)}
                 {...props}
                 value={value}
+                asChild
             >
-                <div className="flex flex-col">
-                    <SelectPrimitive.ItemText className="flex flex-col">{children}</SelectPrimitive.ItemText>
-                    {details && <div className="text-sm text-base-text-color-secondary">{details}</div>}
-                </div>
-                <SelectPrimitive.ItemIndicator className="SelectItemIndicator">
-                    <CheckIcon />
-                </SelectPrimitive.ItemIndicator>
+                <ListItem
+                    label={children as string}
+                    description={details}
+                    showIndicator={true}
+                    variant="select"
+                />
             </SelectPrimitive.Item>
         )
     }

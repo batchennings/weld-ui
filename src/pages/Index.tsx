@@ -93,19 +93,19 @@ const Index = () => {
                     ]}
                 />
             </div>
-            <div className="flex flex-col gap-2">
-                <RadioGroup
-                    id="plan"
-                    label="Select your plan"
-                    description="Choose one option"
-                    defaultValue="basic"
-                    options={[
-                        { value: 'basic', label: 'Basic', description: 'For personal use' },
-                        { value: 'pro', label: 'Pro', description: 'For small teams' },
-                        { value: 'enterprise', label: 'Enterprise', description: 'For large orgs', disabled: true },
+
+            <div className="flex flex-row gap-1" id="filters">
+            <Dropdown
+                    triggerLabel="Actions"
+                    items={[
+                        { label: 'Open', shortcut: '⌘O', Icon: Pen, description: 'Open the item can be used to open the item' },
+                        { label: 'Rename', shortcut: 'F2', Icon: SearchIcon},
+                        { type: 'separator' },
+                        { label: 'Delete', destructive: false, description: 'Delete the item' },
                     ]}
                 />
             </div>
+    
 
             <div className="flex flex-row gap-1" id="filters">
                 <InputText placeholder="Rechercher" size="md" length="md" IconHeading={SearchIcon} shortcut="Ctrl + K" />
