@@ -5,7 +5,7 @@ import { Select } from "@/components/atoms/Select";
 import { Button } from "@/components/atoms/Button";
 import { Pen } from "@/icons";
 import { SearchIcon } from "@primer/octicons-react";
-import { companiesData, companiesColumns } from "@/mock/companies";
+import { companiesData, companiesColumns, companiesActions } from "@/mock/companies";
 
 const Companies = () => {
     const [query, setQuery] = useState("");
@@ -31,7 +31,7 @@ const Companies = () => {
                 <Button label="Modifier" type="secondary" Icon={Pen} size="md" />
             </div>
             <div>
-                <Table data={filteredData} columns={companiesColumns} />
+                <Table data={filteredData} columns={companiesColumns} actions={companiesActions} />
             </div>
         </div>
     );

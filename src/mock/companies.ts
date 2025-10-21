@@ -15,6 +15,26 @@ export const companiesColumns = [
     { header: "Status", priority: "primary", dataType: "pill", hasHeaderLabel: false, accessorKey: "status" }
 ]
 
+import { Pen, Trash, Eye } from "@/icons"
+
+export const companiesActions = [
+    {
+        label: "View",
+        Icon: Eye,
+        onClick: (rowData: any) => console.log("View", rowData)
+    },
+    {
+        label: "Edit",
+        Icon: Pen,
+        onClick: (rowData: any) => console.log("Edit", rowData)
+    },
+    {
+        label: "Delete",
+        Icon: Trash,
+        onClick: (rowData: any) => console.log("Delete", rowData)
+    },
+]
+
 
 
 
