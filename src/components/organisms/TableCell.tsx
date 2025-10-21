@@ -15,7 +15,7 @@ export const TableHeaderCell = ({ content, canSort, isSorted, onSort, ...rest }:
     };
 
     return (
-        <th 
+        <th
             className={`p-3 border-b-2 border-table-border-color text-table-text-color-secondary text-left ${
                 canSort ? 'cursor-pointer hover:bg-base-bg-color-hover select-none' : ''
             } ${ isSorted ? 'bg-table-bg-color-highlight' : ''}`}
@@ -89,7 +89,7 @@ export const TableBodyCell: React.FunctionComponent<TableBodyCellProps> = ({ con
                     }))}
                     triggerElement={
                         <Button
-                            type="ghost"
+                            type="filled"
                             size="sm"
                             Icon={DotsH}
                         />
