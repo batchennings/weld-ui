@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 //import { fn } from '@storybook/test';
 import { InfoIcon, PillIcon, CacheIcon, CheckIcon, DotFillIcon, XIcon } from '@primer/octicons-react'
 
-import { Pill } from './Pill';
+import { Pill } from '@/components/atoms/Pill';
 
 const meta: Meta<typeof Pill> = {
     title: "Components/Pill",

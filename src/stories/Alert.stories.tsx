@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 //import { fn } from '@storybook/test';
 import {InfoIcon, AlertIcon, CacheIcon, CheckIcon} from '@primer/octicons-react'
 
-import { Alert } from '../components/atoms/Alert';
+import { Alert } from '@/components/atoms/Alert';
 
 const meta: Meta<typeof Alert> = {
     title: "Components/Alert",
