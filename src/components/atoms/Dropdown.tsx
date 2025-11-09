@@ -2,7 +2,6 @@ import { cva, type VariantProps } from "class-variance-authority";
 import React from 'react';
 import { DropdownMenu as DropdownPrimitive } from "radix-ui";
 import { cn } from "@/lib/utils";
-import { Button } from "./Button";
 import { ListItem } from "./ListItem";
 
 const contentVariants = cva(
@@ -45,30 +44,22 @@ export type DropdownItem = {
 };
 
 export type DropdownProps = React.HTMLAttributes<HTMLDivElement> &
-     {
-        triggerLabel?: string;
-        triggerElement?: React.ReactNode;
-        items: DropdownItem[];
-    };
+{
+    trigger: React.ReactNode;
+    items: DropdownItem[];
+};
 
 const Dropdown: React.FunctionComponent<DropdownProps> = ({
     className,
-    triggerLabel,
-    triggerElement,
+    trigger,
     items,
     ...props
 }) => {
     return (
         <DropdownPrimitive.Root>
-            {triggerElement ? (
-                <DropdownPrimitive.Trigger asChild>
-                    <Button label={triggerLabel} type="secondary" size="md" />
-                </DropdownPrimitive.Trigger>
-            ) : (
-                <DropdownPrimitive.Trigger className={cn( className)}>
-                    <Button label={triggerLabel} type="secondary" size="md" />
-                </DropdownPrimitive.Trigger>
-            )}
+            <DropdownPrimitive.Trigger asChild>
+                {trigger}
+            </DropdownPrimitive.Trigger>
             <DropdownPrimitive.Portal>
                 <DropdownPrimitive.Content className={contentVariants()} sideOffset={6} align="start">
                     {items.map((it, idx) => {

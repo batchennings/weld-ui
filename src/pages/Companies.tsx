@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Table } from "@/components/organisms/Table";
 import { InputText } from "@/components/atoms/InputText";
 import { Select } from "@/components/atoms/Select";
@@ -9,11 +10,16 @@ import { companiesData, companiesColumns, companiesActions } from "@/mock/compan
 
 const Companies = () => {
     const [query, setQuery] = useState("");
+    const navigate = useNavigate();
 
     const filteredData = companiesData.filter((c) => {
         const haystack = `${c.id} ${c.name} ${c.ville} ${c.siret} ${c.postal_code} ${c.status}`.toLowerCase();
         return haystack.includes(query.toLowerCase());
     });
+
+    const handleRowClick = (rowData: any) => {
+        navigate(`/company/${rowData.id}`);
+    };
 
     return (
         <div className="p-8 h-full flex flex-col gap-4 bg-base-bg-color-regular">
@@ -31,7 +37,12 @@ const Companies = () => {
                 <Button label="Modifier" type="secondary" Icon={Pen} size="md" />
             </div>
             <div>
-                <Table data={filteredData} columns={companiesColumns} actions={companiesActions} />
+                <Table
+                    data={filteredData}
+                    columns={companiesColumns}
+                    actions={companiesActions}
+                    onRowClick={handleRowClick}
+                />
             </div>
         </div>
     );

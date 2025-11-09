@@ -79,7 +79,7 @@ export type ButtonProps = React.HTMLAttributes<HTMLButtonElement> & VariantProps
 
 export const Button: React.FunctionComponent<ButtonProps> = ({ label, Icon, onClick, type, size, disabled, ...rest }) => {
     return (
-        <button {...rest} className={buttonVariants({ type, size })} onClick={onClick} disabled={disabled}>
+        <button {...rest} className={buttonVariants({ type, size })} onClick={(e) => {e.stopPropagation();onClick;}} disabled={disabled}>
             {Icon && <Icon />}
             {label}
         </button>

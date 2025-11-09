@@ -12,7 +12,8 @@ export const companiesColumns = [
     { header: "Ville", priority: "secondary", dataType: "text", hasHeaderLabel: true, accessorKey: "ville" },
     { header: "SIRET", priority: "secondary", dataType: "text", hasHeaderLabel: true, accessorKey: "siret" },
     { header: "Postal Code", priority: "secondary", dataType: "text", hasHeaderLabel: true, accessorKey: "postal_code" },
-    { header: "Status", priority: "primary", dataType: "pill", hasHeaderLabel: false, accessorKey: "status" }
+    { header: "Status", priority: "primary", dataType: "pill", hasHeaderLabel: false, accessorKey: "status" },
+    { header: "SomeAction", priority: "primary", dataType: "button", hasHeaderLabel: false, accessorKey: "action" }
 ]
 
 import { Pen, Trash, Eye } from "@/icons"

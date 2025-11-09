@@ -1,29 +1,30 @@
 import React, { useMemo, useState } from "react";
 import { useReactTable, flexRender, getCoreRowModel, getPaginationRowModel, getSortedRowModel, createColumnHelper } from '@tanstack/react-table'
-import { TableRow } from "./types";
-import { TableHeaderCell, TableBodyCell} from "@/components/organisms/TableCell"
-import { Dropdown } from "@/components/atoms/Dropdown"
+import { CompanyRow } from "./types";
+import { TableHeaderCell, TableBodyCell } from "@/components/organisms/TableCell"
 import { Button } from "@/components/atoms/Button"
 import { Select } from "@/components/atoms/Select"
 import { ChevronLeft, ChevronRight } from "@/icons"
+import { TableRow } from "@/components/organisms/TableRow";
 
 interface TableProps {
-    data: TableRow[];
+    data: CompanyRow[];
     columns: any[];
     actions?: any[];
+    onRowClick?: (row: CompanyRow) => void;
 }
 
-export const Table = ({columns, data, actions } : TableProps) => {
+export const Table = ({ columns, data, actions, onRowClick }: TableProps) => {
     const [pageSize, setPageSize] = useState(25);
     const [sorting, setSorting] = useState([]);
     const [pagination, setPagination] = useState({
         pageIndex: 0,
         pageSize: 25,
     });
-    
-    const table = useReactTable({ 
-        columns, 
-        data, 
+
+    const table = useReactTable({
+        columns,
+        data,
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
         getSortedRowModel: getSortedRowModel(),
@@ -111,10 +112,10 @@ export const Table = ({columns, data, actions } : TableProps) => {
                             />
                             {headerGroup.headers.map(header => (
                                 <TableHeaderCell
-                                    key={ header.id }
-                                    content={flexRender(header.column.columnDef.header, header.getContext())}
-                                    canSort={header.column.getCanSort()}
-                                    isSorted={header.column.getIsSorted()}
+                                    key={header.id}
+                                    content={header.column.columnDef.hasHeaderLabel ? flexRender(header.column.columnDef.header, header.getContext()) : null}
+                                    canSort={header.column.columnDef.hasHeaderLabel ? header.column.getCanSort() : null}
+                                    isSorted={header.column.columnDef.hasHeaderLabel ? header.column.getIsSorted() : null}
                                     onSort={header.column.getToggleSortingHandler()}
                                 />
                             ))}
@@ -126,10 +127,10 @@ export const Table = ({columns, data, actions } : TableProps) => {
                 </thead>
                 <tbody>
                     {table.getRowModel().rows.map(row => (
-                        <tr key={row.id}>
+                        <TableRow onRowClick={onRowClick} id={row.id} original={row.original}>
                             <TableBodyCell
                                 dataType="checkbox"
-                                />
+                            />
                             {row.getVisibleCells().map(cell => {
                                 const dataType = (cell.column.columnDef as any).dataType;
                                 const content = dataType === "pill" ? cell.getValue() : flexRender(cell.column.columnDef.cell, cell.getContext());
@@ -149,7 +150,7 @@ export const Table = ({columns, data, actions } : TableProps) => {
                                 actions={actions}
                                 rowData={row.original}
                             />
-                        </tr>
+                        </TableRow>
                     ))}
                 </tbody>
             </table>

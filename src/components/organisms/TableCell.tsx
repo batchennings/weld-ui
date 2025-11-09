@@ -73,6 +73,7 @@ export const TableBodyCell: React.FunctionComponent<TableBodyCellProps> = ({ con
         <td className={`${bodyCellVariants({ priority, dataType })} ${getSortStyling()} ${ isSorted ? 'bg-table-bg-color-highlight' : ''}`} {...rest}>
             {dataType == "text" && content }
             {dataType == "numeric" && content }
+            {dataType == "button" && <Button type="secondary" label="Action" /> }
             {dataType == "pill" && (() => {
                 const status = String(content).toLowerCase();
                 const pillType = status === "active" ? "green" : status === "inactive" ? "red" : "blue";
@@ -81,15 +82,14 @@ export const TableBodyCell: React.FunctionComponent<TableBodyCellProps> = ({ con
             })()}
             {dataType == "action" && actions && (
                 <Dropdown
-                    triggerLabel=""
                     items={actions.map(action => ({
                         label: action.label,
                         Icon: action.Icon,
                         onSelect: () => action.onClick?.(rowData)
                     }))}
-                    triggerElement={
+                    trigger={
                         <Button
-                            type="filled"
+                            type="ghost"
                             size="sm"
                             Icon={DotsH}
                         />

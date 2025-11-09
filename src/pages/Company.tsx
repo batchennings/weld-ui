@@ -1,24 +1,37 @@
 import React from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Page } from '@/components/templates/Page';
 import { Button } from '@/components/atoms/Button';
 import { Table } from '@/components/organisms/Table';
 import { tableData, tableColumns, tableActions } from '@/mock/table';
+import { companiesData } from '@/mock/companies';
 import { Plus, Cog, ArrowDown } from '@/icons';
 
 const ExamplePage = () => {
+    const { id } = useParams<{ id: string }>();
+    const navigate = useNavigate();
+
+    // Find the company by ID
+    const company = companiesData.find(c => c.id === Number(id));
+
+    // If company not found, redirect to companies list
+    if (!company) {
+        navigate('/companies');
+        return null;
+    }
+
     const breadcrumbs = [
         { label: 'Home', href: '/' },
-        { label: 'Projects', href: '/projects' },
-        { label: 'Current Project', current: true },
+        { label: 'Companies', href: '/companies' },
+        { label: company.name, current: true },
     ];
 
     const metadata = [
-        { label: 'Status', value: 'Active' },
-        { label: 'Last Updated', value: '2 hours ago' },
-        { label: 'Created', value: 'Jan 15, 2024' },
-        { label: 'Owner', value: 'John Doe' },
-        { label: 'Team', value: 'Engineering' },
-        { label: 'Progress', value: '75%' },
+        { label: 'Status', value: company.status },
+        { label: 'Ville', value: company.ville },
+        { label: 'Postal Code', value: company.postal_code },
+        { label: 'SIRET', value: company.siret },
+        { label: 'ID', value: company.id.toString() },
     ];
 
     const tabs = [
@@ -86,8 +99,8 @@ const ExamplePage = () => {
     return (
         <Page
             breadcrumbs={breadcrumbs}
-            title="Project Dashboard"
-            subtitle="Manage your project settings and view analytics"
+            title={company.name}
+            subtitle={`${company.ville} - ${company.siret}`}
             metadata={metadata}
             tabs={tabs}
             headerActions={headerActions}
