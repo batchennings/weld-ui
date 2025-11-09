@@ -1,30 +1,29 @@
-import { cva, type VariantProps } from "class-variance-authority";
 import React from 'react';
-import { Label as LabelPrimitive } from "radix-ui";
-import { cn } from '@/lib/utils';
+import { Typography, TypographyProps } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
-const LabelVariants = cva(
-    [
-        "flex flex-col text-base-text-color-primary text-base"
-    ], {
-    variants: {
-        size: {
-            sm: [],
-            md: [],
-            lg: [],
-        },
-    }
-})
-export type LabelProps = React.HTMLAttributes<HTMLFormElement> & VariantProps<typeof LabelVariants> & {
-    htmlFor?: string;
+export type LabelProps = Omit<TypographyProps<'label'>, 'component'> & {
+  htmlFor?: string;
 };
-export const Label: React.FunctionComponent<LabelProps> = ({ htmlFor, className, description, children }) => {
-    return (
-        <LabelPrimitive.Root htmlFor={htmlFor} className={cn(
-            LabelVariants(),
-            className
-            )} >
-            {children}
-        </LabelPrimitive.Root>
-    )
-}
+
+export const Label: React.FC<LabelProps> = ({ htmlFor, children, sx, ...props }) => {
+  const theme = useTheme();
+
+  return (
+    <Typography
+      component="label"
+      htmlFor={htmlFor}
+      variant="body1"
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        color: theme.custom.base.text.primary,
+        fontSize: theme.typography.body1.fontSize,
+        ...sx,
+      }}
+      {...props}
+    >
+      {children}
+    </Typography>
+  );
+};

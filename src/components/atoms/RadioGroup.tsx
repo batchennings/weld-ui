@@ -1,124 +1,174 @@
-import { cva, type VariantProps } from "class-variance-authority";
 import React from 'react';
-import { RadioGroup as RadioGroupPrimitive } from "radix-ui";
-import { cn } from "@/lib/utils";
-import { Label } from "@/components/atoms/Label";
+import MuiRadioGroup, { RadioGroupProps as MuiRadioGroupProps } from '@mui/material/RadioGroup';
+import MuiRadio from '@mui/material/Radio';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import { Box } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import { Label } from '@/components/atoms/Label';
 
-const radioRootVariants = cva(
-    [
-        "flex flex-col gap-2",
-    ],
-    {
-        variants: {
-            size: {
-                sm: "",
-                md: "",
-                lg: "",
-            },
-        },
-        defaultVariants: {
-            size: "md",
-        },
-    }
-);
-
-const radioItemVariants = cva(
-    [
-        "relative flex items-center justify-center rounded-full border border-form-border-color bg-form-bg-color",
-        "transition focus:shadow-[0_0_0_4px_rgba(37,99,235,0.25)] outline-none",
-        "data-[state=checked]:bg-form-checkbox-bg-color-active",
-    ],
-    {
-        variants: {
-            size: {
-                sm: "size-3",
-                md: "size-4",
-                lg: "size-5",
-            },
-            disabled: {
-                true: "opacity-50 cursor-not-allowed",
-            },
-        },
-        defaultVariants: {
-            size: "md",
-        },
-    }
-);
-
-const radioIndicatorVariants = cva(
-    [
-        "after:content-[''] after:block after:rounded-full after:bg-white",
-    ],
-    {
-        variants: {
-            size: {
-                sm: "after:size-1",
-                md: "after:size-1.5",
-                lg: "after:size-2.5",
-            },
-        },
-        defaultVariants: {
-            size: "md",
-        },
-    }
-);
+export type RadioSize = 'sm' | 'md' | 'lg';
 
 export type RadioOption = {
-    value: string;
-    label: string;
-    description?: string;
-    disabled?: boolean;
+  value: string;
+  label: string;
+  description?: string;
+  disabled?: boolean;
 };
 
-export type RadioGroupProps = React.HTMLAttributes<HTMLDivElement> &
-    VariantProps<typeof radioItemVariants> & {
-        id?: string;
-        label?: string;
-        description?: string;
-        options: RadioOption[];
-        value?: string;
-        defaultValue?: string;
-        onValueChange?: (value: string) => void;
-        disabled?: boolean;
-    };
+export type RadioGroupProps = Omit<MuiRadioGroupProps, 'size'> & {
+  id?: string;
+  label?: string;
+  description?: string;
+  options: RadioOption[];
+  value?: string;
+  defaultValue?: string;
+  onValueChange?: (value: string) => void;
+  disabled?: boolean;
+  size?: RadioSize;
+};
 
-const RadioGroup: React.FunctionComponent<RadioGroupProps> = ({
-    id,
-    className,
-    label,
-    description,
-    options,
-    value,
-    defaultValue,
-    onValueChange,
-    size,
-    disabled,
-    ...props
+export const RadioGroup: React.FC<RadioGroupProps> = ({
+  id,
+  label,
+  description,
+  options,
+  value,
+  defaultValue,
+  onValueChange,
+  size = 'md',
+  disabled,
+  ...props
 }) => {
-    return (
-        <div className={cn(radioRootVariants({ size }), className)} {...props}>
-            {label && <Label htmlFor={id}>{label}</Label>}
-            {description && <div className="text-base-text-color-secondary text-sm">{description}</div>}
-            <RadioGroupPrimitive.Root value={value} defaultValue={defaultValue} onValueChange={onValueChange}>
-                <div className="flex flex-col gap-2">
-                    {options.map((opt) => (
-                        <label key={opt.value} className={cn("flex items-start gap-2 cursor-pointer", { 'cursor-not-allowed': opt.disabled })}>
-                            <RadioGroupPrimitive.Item className={radioItemVariants({ size, disabled: opt.disabled || disabled })} value={opt.value} disabled={opt.disabled || disabled}>
-                                <RadioGroupPrimitive.Indicator className={radioIndicatorVariants({ size })} />
-                            </RadioGroupPrimitive.Item>
-                            <div className="flex flex-col -mt-0.5">
-                                <span className={cn("text-base-text-color-primary text-base", { 'text-base-text-color-muted': opt.disabled || disabled })}>{opt.label}</span>
-                                {opt.description && <span className={cn("text-sm text-base-text-color-secondary", { 'text-base-text-color-muted': opt.disabled || disabled })}>{opt.description}</span>}
-                            </div>
-                        </label>
-                    ))}
-                </div>
-            </RadioGroupPrimitive.Root>
-        </div>
-    );
+  const theme = useTheme();
+
+  // Size configuration
+  const sizeConfig = {
+    sm: { size: 12, dotSize: 4 },
+    md: { size: 16, dotSize: 6 },
+    lg: { size: 20, dotSize: 10 },
+  };
+
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 2,
+      }}
+    >
+      {label && <Label htmlFor={id}>{label}</Label>}
+      {description && (
+        <Box
+          sx={{
+            color: theme.custom.base.text.secondary,
+            fontSize: theme.typography.body2.fontSize,
+          }}
+        >
+          {description}
+        </Box>
+      )}
+      <MuiRadioGroup
+        value={value}
+        defaultValue={defaultValue}
+        onChange={(e) => onValueChange?.(e.target.value)}
+        {...props}
+      >
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          {options.map((opt) => (
+            <FormControlLabel
+              key={opt.value}
+              value={opt.value}
+              disabled={opt.disabled || disabled}
+              control={
+                <MuiRadio
+                  icon={
+                    <Box
+                      sx={{
+                        width: sizeConfig[size].size,
+                        height: sizeConfig[size].size,
+                        borderRadius: '50%',
+                        border: `1px solid ${theme.custom.form.border}`,
+                        backgroundColor: theme.custom.form.bg,
+                      }}
+                    />
+                  }
+                  checkedIcon={
+                    <Box
+                      sx={{
+                        width: sizeConfig[size].size,
+                        height: sizeConfig[size].size,
+                        borderRadius: '50%',
+                        border: `1px solid ${theme.custom.form.checkbox.bgActive}`,
+                        backgroundColor: theme.custom.form.checkbox.bgActive,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          width: sizeConfig[size].dotSize,
+                          height: sizeConfig[size].dotSize,
+                          borderRadius: '50%',
+                          backgroundColor: '#ffffff',
+                        }}
+                      />
+                    </Box>
+                  }
+                  sx={{
+                    padding: 0,
+                    opacity: opt.disabled || disabled ? 0.5 : 1,
+                    cursor: opt.disabled || disabled ? 'not-allowed' : 'pointer',
+                    '&:focus-visible': {
+                      boxShadow: '0 0 0 4px rgba(37,99,235,0.25)',
+                      borderRadius: '50%',
+                    },
+                    '&:hover': {
+                      backgroundColor: 'transparent',
+                    },
+                  }}
+                />
+              }
+              label={
+                <Box sx={{ display: 'flex', flexDirection: 'column', mt: -0.5 }}>
+                  <Box
+                    sx={{
+                      color:
+                        opt.disabled || disabled
+                          ? theme.custom.base.text.muted
+                          : theme.custom.base.text.primary,
+                      fontSize: theme.typography.body1.fontSize,
+                    }}
+                  >
+                    {opt.label}
+                  </Box>
+                  {opt.description && (
+                    <Box
+                      sx={{
+                        fontSize: theme.typography.body2.fontSize,
+                        color:
+                          opt.disabled || disabled
+                            ? theme.custom.base.text.muted
+                            : theme.custom.base.text.secondary,
+                      }}
+                    >
+                      {opt.description}
+                    </Box>
+                  )}
+                </Box>
+              }
+              sx={{
+                alignItems: 'flex-start',
+                gap: 2,
+                margin: 0,
+                cursor: opt.disabled || disabled ? 'not-allowed' : 'pointer',
+              }}
+            />
+          ))}
+        </Box>
+      </MuiRadioGroup>
+    </Box>
+  );
 };
 
 RadioGroup.displayName = 'RadioGroup';
-export { RadioGroup };
-
-

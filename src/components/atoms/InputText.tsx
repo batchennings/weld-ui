@@ -1,146 +1,206 @@
-import * as React from 'react';
-import { cn } from '@/lib/utils';
-import { VariantProps, cva } from 'class-variance-authority';
-import { IconProps } from '@/types/icons'
+import React from 'react';
+import TextField, { TextFieldProps } from '@mui/material/TextField';
+import { Box, Typography, InputAdornment } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import { IconProps } from '@/types/icons';
 import { Label } from '@/components/atoms/Label';
 
-const inputVariants = cva(
-    'px-2.5 bg-form-bg-color rounded-md focus:shadow-[0_0_0_4px_rgba(37,99,235,0.25)] focus:border-form-border-color-focus border disabled:cursor-not-allowed border-form-border-color justify-start items-center gap-2 inline-flex focus:outline-none disabled:bg-form-bg-color-disabled text-base text-base-text-color-primary transition ease-out w-full',
-    {
-        variants: {
-            variant: {
-                default: '',
-            },
-            disabled: {
-                true: "text-table-text-color-secondary"
-            },
-            isError: {
-                true: "",
-                false: "",
-            },
-            size: {
-                sm: 'p-2 h-6',
-                md: 'p-2.5 h-8',
-                lg: 'p-3.5',
-            },
-        },
-        defaultVariants: {
-            variant: 'default',
-            size: 'md',
-        },
-    },
-);
+export type InputSize = 'sm' | 'md' | 'lg';
+export type InputLength = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'full';
 
-export type InputTextProps = React.InputHTMLAttributes<HTMLInputElement> &
-VariantProps<typeof inputVariants> & {
-    IconHeading?: React.ComponentType<IconProps>;
-    IconTrailing?: React.ComponentType<IconProps>;
-    actionAssociated?: React.ReactNode;
-    actionAssociatedOnClick?: () => void;
-    maxLength?: number;
-    onInput?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    placeholder?: string;
-    size?: string;
-    length?: string;
-    shortcut?: string;
-    label?: string;
-    isError?: string;
-    description?: string;
+export type InputTextProps = Omit<TextFieldProps, 'size' | 'variant'> & {
+  IconHeading?: React.ComponentType<IconProps>;
+  IconTrailing?: React.ComponentType<IconProps>;
+  actionAssociated?: React.ReactNode;
+  actionAssociatedOnClick?: () => void;
+  maxLength?: number;
+  onInput?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  size?: InputSize;
+  length?: InputLength;
+  shortcut?: string;
+  label?: string;
+  isError?: boolean;
+  description?: string;
 };
-const InputText: React.FunctionComponent<InputTextProps> = ({
-    className,
-    variant,
-    id,
-    type,
-    isError,
-    IconHeading,
-    IconTrailing,
-    actionAssociated,
-    actionAssociatedOnClick,
-    maxLength,
-    length,
-    size,
-    shortcut,
-    label,
-    description,
-    onInput,
-    ...props
-}) => {
-    return (
-        <div className={cn(
-            "flex-col justify-start items-start gap-1 inline-flex",
-            {
-                'w-full' : (length == 'full'),
-                'w-100' : (length == 'xl'),
-                'w-75' : (length == 'lg'),
-                'w-25' : (length == 'sm'),
-                'w-10' : (length == 'xs'),
-                'w-50' : (length == 'md'),
-            }
-        )}
-        >
 
-            {label && (
-                <Label htmlFor={id} className={cn(
-                    {
-                        'text-base-text-color-muted' : props.disabled
-                    }
-                )}>{label}</Label>
-            )}
-            <div className="flex items-center gap-2 relative w-full">
-                {IconHeading && (
-                    <div className="absolute left-0 pl-2">
-                        <IconHeading size={18} className="text-base-icon-color-secondary" />
-                    </div>
-                )}
-                <input
-                    type={type}
-                    className={cn(
-                        inputVariants({ variant, size }),
-                        className,
-                        {
-                            'pl-8': IconHeading,
-                            'pr-8': actionAssociated,
-                            'lr-8': IconTrailing,
-                        },
-                        {
-                            'text-base-text-color-muted' : props.disabled
-                        }
-                    )}
-                    maxLength={maxLength}
-                    onInput={onInput}
-                    id={id}
-                    {...props}
-                />
+export const InputText: React.FC<InputTextProps> = ({
+  id,
+  type,
+  isError,
+  IconHeading,
+  IconTrailing,
+  actionAssociated,
+  actionAssociatedOnClick,
+  maxLength,
+  length = 'full',
+  size = 'md',
+  shortcut,
+  label,
+  description,
+  onInput,
+  disabled,
+  ...props
+}) => {
+  const theme = useTheme();
+
+  // Size configuration
+  const sizeConfig = {
+    sm: { padding: '8px', height: '24px', fontSize: theme.typography.body2.fontSize },
+    md: { padding: '10px', height: '32px', fontSize: theme.typography.body1.fontSize },
+    lg: { padding: '14px', height: 'auto', fontSize: theme.typography.body1.fontSize },
+  };
+
+  // Length configuration (width)
+  const widthConfig = {
+    xs: '40px',
+    sm: '100px',
+    md: '200px',
+    lg: '300px',
+    xl: '400px',
+    full: '100%',
+  };
+
+  return (
+    <Box
+      sx={{
+        display: 'inline-flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+        gap: 1,
+        width: widthConfig[length],
+      }}
+    >
+      {label && (
+        <Label
+          htmlFor={id}
+          sx={{
+            color: disabled ? theme.custom.base.text.muted : theme.custom.base.text.primary,
+          }}
+        >
+          {label}
+        </Label>
+      )}
+
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, position: 'relative', width: '100%' }}>
+        <TextField
+          id={id}
+          type={type}
+          disabled={disabled}
+          error={isError}
+          fullWidth
+          {...props}
+          inputProps={{
+            maxLength,
+            onInput,
+            ...props.inputProps,
+          }}
+          InputProps={{
+            startAdornment: IconHeading && (
+              <InputAdornment position="start">
+                <IconHeading size={18} sx={{ color: theme.custom.base.icon.secondary }} />
+              </InputAdornment>
+            ),
+            endAdornment: (
+              <>
                 {IconTrailing && (
-                    <div className="absolute right-0 pr-2"><IconTrailing size={18} className="text-base-icon-color-secondary" /></div>
+                  <InputAdornment position="end">
+                    <IconTrailing size={18} sx={{ color: theme.custom.base.icon.secondary }} />
+                  </InputAdornment>
                 )}
                 {shortcut && (
-                    <div className="absolute right-2 pr-2 bg-kbd-bg-color text-kbd-text-color text-xs font-bold px-1.5 py-1 rounded-sm">{shortcut}</div>
+                  <InputAdornment position="end">
+                    <Box
+                      sx={{
+                        backgroundColor: theme.custom.kbd.bg,
+                        color: theme.custom.kbd.text,
+                        fontSize: theme.typography.caption.fontSize,
+                        fontWeight: 'bold',
+                        px: 1.5,
+                        py: 1,
+                        borderRadius: '3px',
+                      }}
+                    >
+                      {shortcut}
+                    </Box>
+                  </InputAdornment>
                 )}
                 {actionAssociated && (
-                    <div
-                        className="absolute right-0 pr-2"
-                        onClick={actionAssociatedOnClick}
-                        style={{
-                            cursor: actionAssociatedOnClick ? 'pointer' : 'default',
-                        }}
-                    >
-                        {actionAssociated}
-                    </div>
+                  <InputAdornment
+                    position="end"
+                    onClick={actionAssociatedOnClick}
+                    sx={{ cursor: actionAssociatedOnClick ? 'pointer' : 'default' }}
+                  >
+                    {actionAssociated}
+                  </InputAdornment>
                 )}
-            </div>
-            {description && (
-                <div className={cn(
-                    "text-base-text-color-secondary text-sm",
-                    {
-                        "text-base-text-color-muted" : props.disabled
-                    }
-                )}>{description}</div>
-            )}
-        </div>
-    )
-}
-InputText.displayName = 'InputText';
+              </>
+            ),
+            ...props.InputProps,
+          }}
+          sx={{
+            width: '100%',
+            '& .MuiOutlinedInput-root': {
+              backgroundColor: disabled ? theme.custom.form.bgDisabled : theme.custom.form.bg,
+              borderRadius: '4px',
+              fontSize: sizeConfig[size].fontSize,
+              height: sizeConfig[size].height,
+              '& fieldset': {
+                borderColor: theme.custom.form.border,
+              },
+              '&:hover fieldset': {
+                borderColor: theme.custom.form.border,
+              },
+              '&.Mui-focused fieldset': {
+                borderColor: theme.custom.form.borderFocus,
+                borderWidth: '1px',
+              },
+              '&.Mui-focused': {
+                boxShadow: '0 0 0 4px rgba(37,99,235,0.25)',
+              },
+              '&.Mui-disabled': {
+                cursor: 'not-allowed',
+                backgroundColor: theme.custom.form.bgDisabled,
+              },
+              '&.Mui-error fieldset': {
+                borderColor: theme.custom.form.borderAlertFocus,
+              },
+              '&.Mui-error.Mui-focused': {
+                boxShadow: '0 0 0 4px rgba(220,38,38,0.25)',
+              },
+            },
+            '& .MuiOutlinedInput-input': {
+              color: disabled
+                ? theme.custom.form.text.secondary
+                : theme.custom.form.text.primary,
+              padding: sizeConfig[size].padding,
+              '&::placeholder': {
+                color: theme.custom.form.text.secondary,
+                opacity: 1,
+              },
+            },
+            '& .MuiInputAdornment-root': {
+              marginLeft: 0,
+              marginRight: 0,
+            },
+          }}
+        />
+      </Box>
 
-export { InputText };
+      {description && (
+        <Typography
+          variant="body2"
+          sx={{
+            color: disabled
+              ? theme.custom.base.text.muted
+              : theme.custom.base.text.secondary,
+          }}
+        >
+          {description}
+        </Typography>
+      )}
+    </Box>
+  );
+};
+
+InputText.displayName = 'InputText';

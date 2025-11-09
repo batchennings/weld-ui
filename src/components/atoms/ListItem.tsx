@@ -1,96 +1,107 @@
-import { cva, type VariantProps } from "class-variance-authority";
 import React from 'react';
-import { cn } from "@/lib/utils";
-import { CheckIcon } from '@primer/octicons-react';
+import { Box, MenuItem, MenuItemProps } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import CheckIcon from '@mui/icons-material/Check';
 
-const listItemVariants = cva(
-    [
-        "flex items-center justify-between w-full gap-3 px-3 py-2",
-        "text-base-text-color-primary",
-        "outline-none",
-        "data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed",
-        "data-[highlighted]:bg-list-row-bg-color-hover",
-    ],
-    {
-        variants: {
-            tone: {
-                default: "",
-                destructive: "text-button-text-color-destructive",
-            },
-            variant: {
-                dropdown: "",
-                select: "flex flex-row justify-between",
-            },
-        },
-        defaultVariants: {
-            tone: "default",
-            variant: "dropdown",
-        },
-    }
-);
+export type ListItemVariant = 'dropdown' | 'select';
+export type ListItemTone = 'default' | 'destructive';
 
-export type ListItemProps = React.HTMLAttributes<HTMLDivElement> & 
-    VariantProps<typeof listItemVariants> & {
-        label?: string;
-        description?: string;
-        shortcut?: string;
-        Icon?: React.ComponentType<{ size?: number; className?: string }>;
-        disabled?: boolean;
-        destructive?: boolean;
-        onSelect?: () => void;
-        value?: string;
-        showIndicator?: boolean;
-        children?: React.ReactNode;
-    };
-const ListItem: React.FunctionComponent<ListItemProps> = ({
-    label,
-    description,
-    shortcut,
-    Icon,
-    disabled,
-    destructive,
-    onSelect,
-    value,
-    showIndicator = false,
-    children,
-    variant,
-    tone,
-    className,
-    ...props
+export type ListItemProps = Omit<MenuItemProps, 'children'> & {
+  label?: string;
+  description?: string;
+  shortcut?: string;
+  Icon?: React.ComponentType<{ size?: number; className?: string }>;
+  disabled?: boolean;
+  destructive?: boolean;
+  onSelect?: () => void;
+  value?: string;
+  showIndicator?: boolean;
+  children?: React.ReactNode;
+  variant?: ListItemVariant;
+  tone?: ListItemTone;
+};
+
+export const ListItem: React.FC<ListItemProps> = ({
+  label,
+  description,
+  shortcut,
+  Icon,
+  disabled,
+  destructive,
+  onSelect,
+  value,
+  showIndicator = false,
+  children,
+  variant = 'dropdown',
+  tone = 'default',
+  ...props
 }) => {
-    const finalTone = destructive ? 'destructive' : tone;
-    
-    return (
-        <div
-            className={cn(listItemVariants({ tone: finalTone, variant }), className)}
-            onClick={onSelect}
-            data-disabled={disabled}
-            {...props}
+  const theme = useTheme();
+  const finalTone = destructive ? 'destructive' : tone;
+
+  return (
+    <MenuItem
+      onClick={onSelect}
+      disabled={disabled}
+      {...props}
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: variant === 'select' ? 'space-between' : 'flex-start',
+        width: '100%',
+        gap: 3,
+        px: 3,
+        py: 2,
+        color:
+          finalTone === 'destructive'
+            ? theme.custom.button.destructive.text
+            : theme.custom.base.text.primary,
+        '&:hover': {
+          backgroundColor: theme.custom.list.bgHover,
+        },
+        '&.Mui-disabled': {
+          opacity: 0.5,
+          cursor: 'not-allowed',
+        },
+        ...props.sx,
+      }}
+    >
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+        {Icon && <Icon size={16} className="text-base-icon-color-secondary" />}
+        <Box>
+          {children || label}
+          {description && (
+            <Box
+              sx={{
+                fontSize: theme.typography.body2.fontSize,
+                color: theme.custom.base.text.secondary,
+              }}
+            >
+              {description}
+            </Box>
+          )}
+        </Box>
+      </Box>
+
+      {shortcut && (
+        <Box
+          component="span"
+          sx={{
+            fontSize: theme.typography.caption.fontSize,
+            color: theme.custom.base.text.secondary,
+          }}
         >
-            <div className="flex items-center gap-2">
-                {Icon && <Icon size={16} className="text-base-icon-color-secondary" />}
-                {children || label}
-                {description && (
-                    <div className="text-sm text-base-text-color-secondary">
-                        {description}
-                    </div>
-                )}
-            </div>
-            
-            {shortcut && (
-                <span className="text-xs text-base-text-color-secondary">
-                    {shortcut}
-                </span>
-            )}
-            
-            {showIndicator && (
-                <div className="SelectItemIndicator">
-                    <CheckIcon />
-                </div>
-            )}
-        </div>
-    );
+          {shortcut}
+        </Box>
+      )}
+
+      {showIndicator && (
+        <Box>
+          <CheckIcon sx={{ fontSize: 16 }} />
+        </Box>
+      )}
+    </MenuItem>
+  );
 };
 
 ListItem.displayName = 'ListItem';
-export { ListItem };

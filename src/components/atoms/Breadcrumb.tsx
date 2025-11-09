@@ -1,98 +1,99 @@
-import { cva, type VariantProps } from "class-variance-authority";
 import React from 'react';
-import { cn } from "@/lib/utils";
-import { ChevronRight } from "@/icons";
+import MuiBreadcrumbs, { BreadcrumbsProps as MuiBreadcrumbsProps } from '@mui/material/Breadcrumbs';
+import { Link, Typography, Box } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import { ChevronRight } from '@/icons';
 
-const breadcrumbVariants = cva(
-    [
-        "flex items-center gap-1 text-sm",
-    ],
-    {
-        variants: {
-            size: {
-                sm: "text-sm",
-                md: "text-base",
-                lg: "text-lg",
-            },
-        },
-        defaultVariants: {
-            size: "md",
-        },
-    }
-);
-
-const breadcrumbItemVariants = cva(
-    [
-        "flex items-center gap-1",
-    ],
-    {
-        variants: {
-            state: {
-                current: "text-base-text-color-primary font-medium",
-                default: "text-base-text-color-secondary hover:text-base-text-color-primary",
-                disabled: "text-base-text-color-muted cursor-not-allowed",
-            },
-        },
-        defaultVariants: {
-            state: "default",
-        },
-    }
-);
+export type BreadcrumbSize = 'sm' | 'md' | 'lg';
 
 export type BreadcrumbItem = {
-    label: string;
-    href?: string;
-    disabled?: boolean;
-    current?: boolean;
+  label: string;
+  href?: string;
+  disabled?: boolean;
+  current?: boolean;
 };
 
-export type BreadcrumbProps = React.HTMLAttributes<HTMLDivElement> & 
-    VariantProps<typeof breadcrumbVariants> & {
-        items: BreadcrumbItem[];
-        separator?: React.ReactNode;
-    };
+export type BreadcrumbProps = Omit<MuiBreadcrumbsProps, 'children'> & {
+  items: BreadcrumbItem[];
+  separator?: React.ReactNode;
+  size?: BreadcrumbSize;
+};
 
-const Breadcrumb: React.FunctionComponent<BreadcrumbProps> = ({
-    items,
-    separator,
-    size,
-    className,
-    ...props
+export const Breadcrumb: React.FC<BreadcrumbProps> = ({
+  items,
+  separator,
+  size = 'md',
+  ...props
 }) => {
-    const defaultSeparator = <ChevronRight size={12} className="text-base-icon-color-muted" />;
-    const finalSeparator = separator || defaultSeparator;
+  const theme = useTheme();
 
-    return (
-        <nav className={cn(breadcrumbVariants({ size }), className)} {...props}>
-            {items.map((item, index) => {
-                const isLast = index === items.length - 1;
-                const itemState = item.current ? 'current' : item.disabled ? 'disabled' : 'default';
-                
-                return (
-                    <React.Fragment key={index}>
-                        <div className={breadcrumbItemVariants({ state: itemState })}>
-                            {item.href && !item.disabled && !item.current ? (
-                                <a 
-                                    href={item.href}
-                                    className="hover:underline"
-                                >
-                                    {item.label}
-                                </a>
-                            ) : (
-                                <span>{item.label}</span>
-                            )}
-                        </div>
-                        {!isLast && (
-                            <span className="flex items-center">
-                                {finalSeparator}
-                            </span>
-                        )}
-                    </React.Fragment>
-                );
-            })}
-        </nav>
-    );
+  const sizeConfig = {
+    sm: theme.typography.body2.fontSize,
+    md: theme.typography.body1.fontSize,
+    lg: theme.typography.h5.fontSize,
+  };
+
+  const defaultSeparator = <ChevronRight size={12} className="text-base-icon-color-muted" />;
+  const finalSeparator = separator || defaultSeparator;
+
+  return (
+    <MuiBreadcrumbs
+      separator={finalSeparator}
+      {...props}
+      sx={{
+        fontSize: sizeConfig[size],
+        ...props.sx,
+      }}
+    >
+      {items.map((item, index) => {
+        const itemState = item.current ? 'current' : item.disabled ? 'disabled' : 'default';
+
+        const getColor = () => {
+          switch (itemState) {
+            case 'current':
+              return theme.custom.base.text.primary;
+            case 'disabled':
+              return theme.custom.base.text.muted;
+            default:
+              return theme.custom.base.text.secondary;
+          }
+        };
+
+        if (item.href && !item.disabled && !item.current) {
+          return (
+            <Link
+              key={index}
+              href={item.href}
+              underline="hover"
+              sx={{
+                color: getColor(),
+                fontSize: 'inherit',
+                '&:hover': {
+                  color: theme.custom.base.text.primary,
+                },
+              }}
+            >
+              {item.label}
+            </Link>
+          );
+        }
+
+        return (
+          <Typography
+            key={index}
+            sx={{
+              color: getColor(),
+              fontSize: 'inherit',
+              fontWeight: item.current ? 'medium' : 'normal',
+              cursor: item.disabled ? 'not-allowed' : 'default',
+            }}
+          >
+            {item.label}
+          </Typography>
+        );
+      })}
+    </MuiBreadcrumbs>
+  );
 };
 
 Breadcrumb.displayName = 'Breadcrumb';
-export { Breadcrumb };

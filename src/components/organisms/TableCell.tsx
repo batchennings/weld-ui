@@ -1,5 +1,4 @@
 import { IconProps } from "@primer/octicons-react";
-import { cva, type VariantProps } from "class-variance-authority";
 import { Pill } from "../atoms/Pill";
 import { Dropdown } from "../atoms/Dropdown";
 import { Button } from "../atoms/Button";
@@ -30,25 +29,7 @@ export const TableHeaderCell = ({ content, canSort, isSorted, onSort, ...rest }:
     );
 };
 
-const bodyCellVariants = cva("border-b px-4 py-3 border-table-border-color", {
-    variants: {
-        priority: {
-            primary: ["text-table-text-color-primary"],
-            secondary: ["text-table-text-color-secondary"],
-        },
-        dataType: {
-            text: "text-left",
-            numeric: "text-right font-mono",
-            pill: "text-left",
-            action: "text-center w-fit",
-            checkbox: "text-center w-fit",
-        }
-    },
-    defaultVariants: {
-        priority: "primary",
-    },
-});
-export type TableBodyCellProps = Omit<React.HTMLAttributes<HTMLTableCellElement>, 'content'> & VariantProps<typeof bodyCellVariants> & {
+export type TableBodyCellProps = Omit<React.HTMLAttributes<HTMLTableCellElement>, 'content'> & {
     content?: any;
     priority?: string;
     dataType: "text" | "numeric" | "pill" | "action" | "checkbox";
@@ -70,7 +51,7 @@ export const TableBodyCell: React.FunctionComponent<TableBodyCellProps> = ({ con
     };
 
     return (
-        <td className={`${bodyCellVariants({ priority, dataType })} ${getSortStyling()} ${ isSorted ? 'bg-table-bg-color-highlight' : ''}`} {...rest}>
+        <td {...rest}>
             {dataType == "text" && content }
             {dataType == "numeric" && content }
             {dataType == "button" && <Button type="secondary" label="Action" /> }

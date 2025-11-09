@@ -1,99 +1,104 @@
-import { cva, type VariantProps } from "class-variance-authority";
 import React from 'react';
-import { Select as SelectPrimitive } from "radix-ui";
-import { ChevronDownIcon, CheckIcon, InfoIcon, AlertIcon, DotFillIcon, SearchIcon, XIcon } from '@primer/octicons-react'
-import { cn } from "@/lib/utils";
-import { SelectItemProps as RadixSelectItemProps } from "@radix-ui/react-select";
-import { IconProps } from "@/types/icons";
-import { ListItem } from "./ListItem";
+import MuiSelect, { SelectProps as MuiSelectProps } from '@mui/material/Select';
+import { useTheme } from '@mui/material/styles';
+import { ChevronDownIcon } from '@primer/octicons-react';
+import { ListItem } from './ListItem';
 
-const SelectVariants = cva(
-    [
-        "transition ease-out duration-300 disabled:cursor-not-allowed",
-        "border border-form-border-color rounded-md inline-flex justify-between items-center w-64",
-        "bg-none",
-        "text-button-text-color-outline",
-        "border-button-border-color-outline",
-        "border",
-        "text-button-text-color-outline",
-        "hover:border-button-border-color-outline-hover",
-        "hover:text-button-border-color-outline-hover",
-        "disabled:border-button-border-color-outline-disabled",
-        "disabled:text-button-text-color-outline-disabled",
-        "focus:shadow-[0_0_0_4px_rgba(37,99,235,0.25)]",
-    ], {
-        variants: {
-            size: {
-                sm: ["text-sm", "px-2", "gap-1", "h-6"],
-                md: ["text-base", "px-3", "gap-2", "h-8"],
-                lg: ["text-lg", "px-4", "gap-2", "h-10"],
-            },
-        }
-    })
-export type SelectProps = VariantProps<typeof SelectVariants> & {
-    content: string;
-    placeholder: string;
-    options: Array<{ value: string; details?: string }>;
-    onValueChange?: (value: string) => void;
-    value?: string;
+export type SelectSize = 'sm' | 'md' | 'lg';
+
+export type SelectProps = Omit<MuiSelectProps, 'size'> & {
+  content: string;
+  placeholder: string;
+  options: Array<{ value: string; details?: string }>;
+  onValueChange?: (value: string) => void;
+  value?: string;
+  size?: SelectSize;
 };
-export const Select: React.FunctionComponent<SelectProps> = ({ content, size, placeholder, options, onValueChange, value, ...rest }) => {
-    return (
-        <SelectPrimitive.Root value={value} onValueChange={onValueChange}>
-            <SelectPrimitive.Trigger aria-label="Food" className={SelectVariants({ size })}>
-                <SelectPrimitive.Value className="text-base-accent-400" placeholder={placeholder} />
-                <SelectPrimitive.Icon >
-                    <ChevronDownIcon />
-                </SelectPrimitive.Icon>
-            </SelectPrimitive.Trigger>
-            <SelectPrimitive.Portal>
-                <SelectPrimitive.Content className="bg-base-bg-color-regular rounded-md border border-list-border-color w-64" position="popper" align="center">
-                    <SelectPrimitive.Viewport>
-                        <SelectPrimitive.Group>
-                            {options.map(option => (
-                                <>
-                                    <SelectItem key={option.value} value={option.value} details={option.details} detailsPosition="newline">{option.value}</SelectItem>
-                                </>
-                            ))}
-                        </SelectPrimitive.Group>
-                    </SelectPrimitive.Viewport>
-                </SelectPrimitive.Content>
-            </SelectPrimitive.Portal>
-        </SelectPrimitive.Root>
 
-    )
-}
-export type SelectItemProps = RadixSelectItemProps & {
-    value: string;
-    details?: string;
-    detailsPosition?: "newline" | "inlineAfter" | "inlineBefore";
-    pillValue?: string;
-}
+export const Select: React.FC<SelectProps> = ({
+  content,
+  size = 'md',
+  placeholder,
+  options,
+  onValueChange,
+  value,
+  ...rest
+}) => {
+  const theme = useTheme();
 
-const SelectItem: React.FunctionComponent<SelectItemProps> =
-    ({ children, className, value, details, detailsPosition = "newline", ...props }) => {
-        return (
-            <SelectPrimitive.Item
-                className={cn("SelectItem", className)}
-                {...props}
-                value={value}
-                asChild
-            >
-                <ListItem
-                    label={children as string}
-                    description={details}
-                    showIndicator={true}
-                    variant="select"
-                />
-            </SelectPrimitive.Item>
-        )
-    }
-//const SelectItem = React.forwardRef<SelectItemProps>(({ value, children, ...rest }, ref) => {
-//    <SelectPrimitive.Item value={value} className="" ref={ref}>
-//        <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
-//        <SelectPrimitive.ItemIndicator className="SelectItemIndicator">
-//            <CheckIcon />
-//        </SelectPrimitive.ItemIndicator>
-//    </SelectPrimitive.Item>
-//}
-//)
+  const sizeConfig = {
+    sm: { fontSize: theme.typography.body2.fontSize, px: 2, gap: 1, height: 24 },
+    md: { fontSize: theme.typography.body1.fontSize, px: 3, gap: 2, height: 32 },
+    lg: { fontSize: theme.typography.h5.fontSize, px: 4, gap: 2, height: 40 },
+  };
+
+  return (
+    <MuiSelect
+      value={value}
+      onChange={(e) => onValueChange?.(e.target.value as string)}
+      displayEmpty
+      IconComponent={ChevronDownIcon}
+      renderValue={(selected) => {
+        if (!selected) {
+          return <span style={{ color: theme.custom.base.text.muted }}>{placeholder}</span>;
+        }
+        return selected as string;
+      }}
+      {...rest}
+      sx={{
+        width: 256,
+        height: sizeConfig[size].height,
+        fontSize: sizeConfig[size].fontSize,
+        backgroundColor: 'transparent',
+        border: `1px solid ${theme.custom.button.outline.border}`,
+        borderRadius: '4px',
+        color: theme.custom.button.outline.text,
+        '& .MuiOutlinedInput-notchedOutline': {
+          border: 'none',
+        },
+        '&:hover': {
+          borderColor: theme.custom.button.outline.borderHover,
+          color: theme.custom.button.outline.textHover,
+        },
+        '&.Mui-focused': {
+          boxShadow: '0 0 0 4px rgba(37,99,235,0.25)',
+          borderColor: theme.custom.button.outline.borderFocus,
+        },
+        '&.Mui-disabled': {
+          borderColor: theme.custom.button.outline.border,
+          color: theme.custom.button.outline.textDisabled,
+          cursor: 'not-allowed',
+        },
+        '& .MuiSelect-select': {
+          px: sizeConfig[size].px,
+          py: 0,
+          display: 'flex',
+          alignItems: 'center',
+        },
+        ...rest.sx,
+      }}
+      MenuProps={{
+        PaperProps: {
+          sx: {
+            backgroundColor: theme.custom.base.bg.regular,
+            borderRadius: '4px',
+            border: `1px solid ${theme.custom.list.border}`,
+            width: 256,
+            mt: 1,
+          },
+        },
+      }}
+    >
+      {options.map((option) => (
+        <ListItem
+          key={option.value}
+          value={option.value}
+          label={option.value}
+          description={option.details}
+          showIndicator={true}
+          variant="select"
+        />
+      ))}
+    </MuiSelect>
+  );
+};

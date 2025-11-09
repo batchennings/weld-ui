@@ -1,88 +1,189 @@
-import { cva, type VariantProps } from "class-variance-authority";
-import React, { ReactNode } from 'react';
-import { IconProps } from '@/types/icons'
-import { log } from "console";
+import React from 'react';
+import MuiButton, { ButtonProps as MuiButtonProps } from '@mui/material/Button';
+import { useTheme } from '@mui/material/styles';
+import { IconProps } from '@/types/icons';
 
-const buttonVariants = cva("button transition justify-start items-center rounded-md inline-flex flex-nowrap flex-row w-auto transition ease-out duration-300 disabled:cursor-not-allowed", {
-    variants: {
-        type: {
-            primary: [
-                "bg-button-bg-color-filled",
-                "text-button-text-color-filled",
-                "border-transparent",
-                "hover:bg-button-bg-color-filled-hover",
-                "disabled:bg-button-bg-color-filled-disabled",
-                "disabled:text-button-text-color-filled-disabled",
-                "focus:shadow-[0_0_0_4px_rgba(37,99,235,0.25)]",
-            ],
-            secondary: [
-                "bg-none",
-                "text-button-text-color-outline",
-                "border-button-border-color-outline",
-                "border",
-                "text-button-text-color-outline",
-                "hover:border-button-border-color-outline-hover",
-                "hover:text-button-border-color-outline-hover",
-                "disabled:border-button-border-color-outline-disabled",
-                "disabled:text-button-text-color-outline-disabled",
-                "focus:shadow-[0_0_0_4px_rgba(37,99,235,0.25)]",
-            ],
-            destructive: [
-                "bg-button-bg-color-destructive",
-                "text-button-text-color-destructive",
-                "border-transparent",
-                "hover:bg-button-bg-color-destructive-hover",
-                "disabled:bg-button-bg-color-destructive-disabled",
-                "disabled:text-button-text-color-destructive-disabled",
-                "focus:shadow-[0_0_0_4px_rgba(239,68,68,0.25)]",
-            ],
-            ghost: [
-                "bg-button-bg-color-outline",
-                "border",
-                "border-button-border-color-outline/0",
-                "text-button-text-color-outline",
-                "hover:border",
-                "hover:border-button-border-color-outline-hover",
-                "hover:text-button-border-color-outline-hover",
-                "disabled:border-button-border-color-outline-disabled",
-                "disabled:text-button-text-color-outline-disabled",
-                "focus:shadow-[0_0_0_4px_rgba(37,99,235,0.25)]",
-            ],
-            link: [
-                "focus:shadow-[0_0_0_4px_rgba(37,99,235,0.25)]",
-            ],
-        },
-        size: {
-            sm: ["text-sm", "px-2", "gap-1", "h-6"],
-            md: ["text-base", "px-3", "gap-2", "h-8"],
-            lg: ["text-lg", "px-4", "gap-2", "h-10"],
-        },
-    },
-    compoundVariants: [
-        {
-            type: "link",
-            size: "md",
-            className: "px-0.5 text-button-text-color-link hover:text-button-text-color-link-hover"
-        }
-    ],
-    defaultVariants: {
-        type: "primary",
-        size: "md",
-    },
-});
+export type ButtonVariant = 'primary' | 'secondary' | 'destructive' | 'ghost' | 'link';
+export type ButtonSize = 'sm' | 'md' | 'lg';
 
-export type ButtonProps = React.HTMLAttributes<HTMLButtonElement> & VariantProps<typeof buttonVariants> & {
-    label?: string;
-    Icon?: React.ComponentType<IconProps>;
-    disabled?: boolean;
+export type ButtonProps = Omit<MuiButtonProps, 'variant' | 'size' | 'color'> & {
+  label?: string;
+  Icon?: React.ComponentType<IconProps>;
+  type?: ButtonVariant;
+  size?: ButtonSize;
 }
 
-export const Button: React.FunctionComponent<ButtonProps> = ({ label, Icon, onClick, type, size, disabled, ...rest }) => {
-    return (
-        <button {...rest} className={buttonVariants({ type, size })} onClick={(e) => {e.stopPropagation();onClick;}} disabled={disabled}>
-            {Icon && <Icon />}
-            {label}
-        </button>
-    )
-}
+export const Button: React.FC<ButtonProps> = ({
+  label,
+  Icon,
+  onClick,
+  type = 'primary',
+  size = 'md',
+  disabled,
+  children,
+  ...rest
+}) => {
+  const theme = useTheme();
 
+  // Size configuration
+  const sizeConfig = {
+    sm: {
+      fontSize: theme.typography.body2.fontSize,
+      px: 2,
+      gap: 1,
+      height: 24,
+    },
+    md: {
+      fontSize: theme.typography.body1.fontSize,
+      px: 3,
+      gap: 2,
+      height: 32,
+    },
+    lg: {
+      fontSize: theme.typography.h5.fontSize,
+      px: 4,
+      gap: 2,
+      height: 40,
+    },
+  };
+
+  // Variant configuration
+  const getVariantSx = () => {
+    const baseStyles = {
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      borderRadius: '4px',
+      display: 'inline-flex',
+      flexWrap: 'nowrap',
+      flexDirection: 'row',
+      width: 'auto',
+      transition: 'all 0.3s ease-out',
+      textTransform: 'none',
+      ...sizeConfig[size],
+    };
+
+    switch (type) {
+      case 'primary':
+        return {
+          ...baseStyles,
+          backgroundColor: theme.custom.button.filled.bg,
+          color: theme.custom.button.filled.text,
+          border: 'none',
+          '&:hover': {
+            backgroundColor: theme.custom.button.filled.bgHover,
+            color: theme.custom.button.filled.textHover,
+          },
+          '&:disabled': {
+            backgroundColor: theme.custom.button.filled.bgDisabled,
+            color: theme.custom.button.filled.textDisabled,
+            cursor: 'not-allowed',
+          },
+          '&:focus': {
+            boxShadow: '0 0 0 4px rgba(37,99,235,0.25)',
+          },
+        };
+
+      case 'secondary':
+        return {
+          ...baseStyles,
+          backgroundColor: 'transparent',
+          color: theme.custom.button.outline.text,
+          border: `1px solid ${theme.custom.button.outline.border}`,
+          '&:hover': {
+            borderColor: theme.custom.button.outline.borderHover,
+            color: theme.custom.button.outline.textHover,
+            backgroundColor: 'transparent',
+          },
+          '&:disabled': {
+            borderColor: theme.custom.button.outline.border,
+            color: theme.custom.button.outline.textDisabled,
+            cursor: 'not-allowed',
+          },
+          '&:focus': {
+            boxShadow: '0 0 0 4px rgba(37,99,235,0.25)',
+          },
+        };
+
+      case 'destructive':
+        return {
+          ...baseStyles,
+          backgroundColor: theme.custom.button.destructive.bg,
+          color: theme.custom.button.destructive.text,
+          border: 'none',
+          '&:hover': {
+            backgroundColor: theme.custom.button.destructive.bgHover,
+            color: theme.custom.button.destructive.textHover,
+          },
+          '&:disabled': {
+            backgroundColor: theme.custom.button.destructive.bgDisabled,
+            color: theme.custom.button.destructive.textDisabled,
+            cursor: 'not-allowed',
+          },
+          '&:focus': {
+            boxShadow: '0 0 0 4px rgba(239,68,68,0.25)',
+          },
+        };
+
+      case 'ghost':
+        return {
+          ...baseStyles,
+          backgroundColor: theme.custom.button.outline.bg,
+          color: theme.custom.button.outline.text,
+          border: `1px solid transparent`,
+          '&:hover': {
+            borderColor: theme.custom.button.outline.borderHover,
+            color: theme.custom.button.outline.textHover,
+            backgroundColor: theme.custom.button.outline.bg,
+          },
+          '&:disabled': {
+            borderColor: 'transparent',
+            color: theme.custom.button.outline.textDisabled,
+            cursor: 'not-allowed',
+          },
+          '&:focus': {
+            boxShadow: '0 0 0 4px rgba(37,99,235,0.25)',
+          },
+        };
+
+      case 'link':
+        return {
+          ...baseStyles,
+          px: 0.5,
+          backgroundColor: 'transparent',
+          color: theme.custom.button.link.text,
+          border: 'none',
+          '&:hover': {
+            backgroundColor: 'transparent',
+            color: theme.custom.button.link.textHover,
+          },
+          '&:disabled': {
+            color: theme.custom.button.link.textDisabled,
+            cursor: 'not-allowed',
+          },
+          '&:focus': {
+            boxShadow: '0 0 0 4px rgba(37,99,235,0.25)',
+          },
+        };
+
+      default:
+        return baseStyles;
+    }
+  };
+
+  return (
+    <MuiButton
+      {...rest}
+      sx={getVariantSx()}
+      onClick={(e) => {
+        e.stopPropagation();
+        onClick?.(e);
+      }}
+      disabled={disabled}
+      disableRipple
+      disableElevation
+    >
+      {Icon && <Icon />}
+      {label || children}
+    </MuiButton>
+  );
+};

@@ -1,65 +1,7 @@
-import { cva, type VariantProps } from "class-variance-authority";
 import React from 'react';
 import { cn } from "@/lib/utils";
-import { NavigationBar } from "@/components/organisms/NavigationBar";
 import { Breadcrumb } from "@/components/atoms/Breadcrumb";
 import { Tabs } from "@/components/atoms/Tabs";
-
-const pageVariants = cva(
-    [
-        "min-h-screen bg-base-bg-color-regular",
-    ],
-    {
-        variants: {
-            layout: {
-                default: "",
-                sidebar: "flex",
-                fullscreen: "h-screen overflow-hidden",
-            },
-        },
-        defaultVariants: {
-            layout: "default",
-        },
-    }
-);
-
-const contentVariants = cva(
-    [
-        "flex-1 p-6",
-    ],
-    {
-        variants: {
-            padding: {
-                none: "p-0",
-                sm: "p-4",
-                md: "p-6",
-                lg: "p-8",
-            },
-        },
-        defaultVariants: {
-            padding: "md",
-        },
-    }
-);
-
-const headerVariants = cva(
-    [
-        "mb-6",
-    ],
-    {
-        variants: {
-            spacing: {
-                none: "mb-0",
-                sm: "mb-4",
-                md: "mb-6",
-                lg: "mb-8",
-            },
-        },
-        defaultVariants: {
-            spacing: "md",
-        },
-    }
-);
 
 export type BreadcrumbItem = {
     label: string;
@@ -81,13 +23,13 @@ export type MetadataItem = {
     type?: "text" | "badge" | "status";
 };
 
-export type PageProps = React.HTMLAttributes<HTMLDivElement> & 
-    VariantProps<typeof pageVariants> & 
-    VariantProps<typeof contentVariants> & 
+export type PageProps = React.HTMLAttributes<HTMLDivElement> &
+    VariantProps<typeof pageVariants> &
+    VariantProps<typeof contentVariants> &
     VariantProps<typeof headerVariants> & {
         // Navigation
         navigationProps?: React.ComponentProps<typeof NavigationBar>;
-        
+
         // Header content
         breadcrumbs?: BreadcrumbItem[];
         title?: string;
@@ -95,10 +37,10 @@ export type PageProps = React.HTMLAttributes<HTMLDivElement> &
         metadata?: MetadataItem[];
         tabs?: TabItem[];
         headerActions?: React.ReactNode;
-        
+
         // Main content
         children?: React.ReactNode;
-        
+
         // Layout options
         showNavigation?: boolean;
         showHeader?: boolean;
@@ -110,7 +52,7 @@ export type PageProps = React.HTMLAttributes<HTMLDivElement> &
 const Page: React.FunctionComponent<PageProps> = ({
     // Navigation
     navigationProps,
-    
+
     // Header content
     breadcrumbs,
     title,
@@ -118,17 +60,17 @@ const Page: React.FunctionComponent<PageProps> = ({
     metadata,
     tabs,
     headerActions,
-    
+
     // Main content
     children,
-    
+
     // Layout options
     showNavigation = true,
     showHeader = true,
     showBreadcrumbs = true,
     showMetadata = true,
     showTabs = true,
-    
+
     // Styling
     layout,
     padding,
@@ -142,7 +84,7 @@ const Page: React.FunctionComponent<PageProps> = ({
             {showNavigation && (
                 <NavigationBar {...navigationProps} />
             )}
-            
+
             {/* Main Content Area */}
             <main className={cn(contentVariants({ padding }))}>
                 {/* Page Header */}
@@ -154,7 +96,7 @@ const Page: React.FunctionComponent<PageProps> = ({
                                 <Breadcrumb items={breadcrumbs} />
                             </div>
                         )}
-                        
+
                         {/* Title and Subtitle */}
                         {(title || subtitle) && (
                             <div className="mb-6">
@@ -170,7 +112,7 @@ const Page: React.FunctionComponent<PageProps> = ({
                                 )}
                             </div>
                         )}
-                        
+
                         {/* Metadata */}
                         {showMetadata && metadata && metadata.length > 0 && (
                             <div className="mb-6">
@@ -188,21 +130,21 @@ const Page: React.FunctionComponent<PageProps> = ({
                                 </div>
                             </div>
                         )}
-                        
+
                         {/* Header Actions */}
                         {headerActions && (
                             <div className="mb-6">
                                 {headerActions}
                             </div>
                         )}
-                        
+
                         {/* Tabs */}
                         {showTabs && tabs && tabs.length > 0 && (
                             <Tabs items={tabs} />
                         )}
                     </header>
                 )}
-                
+
                 {/* Main Content */}
                 <div className="flex-1">
                     {children || (

@@ -1,120 +1,120 @@
-import { cva, type VariantProps } from "class-variance-authority";
 import React, { useState } from 'react';
-import { cn } from "@/lib/utils";
+import MuiTabs, { TabsProps as MuiTabsProps } from '@mui/material/Tabs';
+import MuiTab from '@mui/material/Tab';
+import { Box } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
-const tabsVariants = cva(
-    [
-        "flex border-b border-form-border-color",
-    ],
-    {
-        variants: {
-            size: {
-                sm: "gap-1",
-                md: "gap-2",
-                lg: "gap-3",
-            },
-        },
-        defaultVariants: {
-            size: "md",
-        },
-    }
-);
-
-const tabVariants = cva(
-    [
-        "px-3 py-2 text-sm font-medium border-b-2 border-transparent",
-        "transition-colors duration-200",
-        "hover:text-base-text-color-primary",
-        "focus:outline-none focus:ring-2 focus:ring-base-accent-400 focus:ring-offset-2",
-    ],
-    {
-        variants: {
-            state: {
-                active: "text-base-text-color-primary border-base-accent-400",
-                inactive: "text-base-text-color-secondary hover:border-base-text-color-muted",
-                disabled: "text-base-text-color-muted cursor-not-allowed hover:text-base-text-color-muted",
-            },
-        },
-        defaultVariants: {
-            state: "inactive",
-        },
-    }
-);
+export type TabSize = 'sm' | 'md' | 'lg';
 
 export type TabItem = {
-    id: string;
-    label: string;
-    disabled?: boolean;
-    content?: React.ReactNode;
+  id: string;
+  label: string;
+  disabled?: boolean;
+  content?: React.ReactNode;
 };
 
-export type TabsProps = React.HTMLAttributes<HTMLDivElement> & 
-    VariantProps<typeof tabsVariants> & {
-        items: TabItem[];
-        defaultValue?: string;
-        value?: string;
-        onValueChange?: (value: string) => void;
-        orientation?: "horizontal" | "vertical";
-    };
+export type TabsProps = Omit<MuiTabsProps, 'children' | 'value' | 'onChange'> & {
+  items: TabItem[];
+  defaultValue?: string;
+  value?: string;
+  onValueChange?: (value: string) => void;
+  orientation?: 'horizontal' | 'vertical';
+  size?: TabSize;
+};
 
-const Tabs: React.FunctionComponent<TabsProps> = ({
-    items,
-    defaultValue,
-    value,
-    onValueChange,
-    orientation = "horizontal",
-    size,
-    className,
-    ...props
+export const Tabs: React.FC<TabsProps> = ({
+  items,
+  defaultValue,
+  value,
+  onValueChange,
+  orientation = 'horizontal',
+  size = 'md',
+  ...props
 }) => {
-    const [internalValue, setInternalValue] = useState(defaultValue || items[0]?.id || "");
-    const currentValue = value !== undefined ? value : internalValue;
+  const theme = useTheme();
+  const [internalValue, setInternalValue] = useState(defaultValue || items[0]?.id || '');
+  const currentValue = value !== undefined ? value : internalValue;
 
-    const handleTabClick = (tabId: string) => {
-        if (onValueChange) {
-            onValueChange(tabId);
-        } else {
-            setInternalValue(tabId);
-        }
-    };
+  const handleTabClick = (_event: React.SyntheticEvent, newValue: string) => {
+    if (onValueChange) {
+      onValueChange(newValue);
+    } else {
+      setInternalValue(newValue);
+    }
+  };
 
-    const currentTab = items.find(item => item.id === currentValue);
+  const sizeConfig = {
+    sm: { gap: 1 },
+    md: { gap: 2 },
+    lg: { gap: 3 },
+  };
 
-    return (
-        <div className={cn("w-full", className)} {...props}>
-            <div className={cn(tabsVariants({ size }), orientation === "vertical" && "flex-col border-b-0 border-r")}>
-                {items.map((item) => {
-                    const isActive = item.id === currentValue;
-                    const state = item.disabled ? 'disabled' : isActive ? 'active' : 'inactive';
-                    
-                    return (
-                        <button
-                            key={item.id}
-                            className={cn(tabVariants({ state }))}
-                            onClick={() => !item.disabled && handleTabClick(item.id)}
-                            disabled={item.disabled}
-                            role="tab"
-                            aria-selected={isActive}
-                            aria-controls={`tabpanel-${item.id}`}
-                        >
-                            {item.label}
-                        </button>
-                    );
-                })}
-            </div>
-            
-            {currentTab?.content && (
-                <div 
-                    id={`tabpanel-${currentTab.id}`}
-                    role="tabpanel"
-                    className="mt-4"
-                >
-                    {currentTab.content}
-                </div>
-            )}
-        </div>
-    );
+  const currentTab = items.find((item) => item.id === currentValue);
+
+  return (
+    <Box sx={{ width: '100%' }}>
+      <MuiTabs
+        value={currentValue}
+        onChange={handleTabClick}
+        orientation={orientation}
+        {...props}
+        sx={{
+          borderBottom: orientation === 'horizontal' ? `1px solid ${theme.custom.form.border}` : 'none',
+          borderRight: orientation === 'vertical' ? `1px solid ${theme.custom.form.border}` : 'none',
+          gap: sizeConfig[size].gap,
+          '& .MuiTabs-indicator': {
+            backgroundColor: theme.custom.tab.borderActive,
+          },
+          ...props.sx,
+        }}
+      >
+        {items.map((item) => (
+          <MuiTab
+            key={item.id}
+            value={item.id}
+            label={item.label}
+            disabled={item.disabled}
+            sx={{
+              px: 3,
+              py: 2,
+              fontSize: theme.typography.body2.fontSize,
+              fontWeight: 'medium',
+              textTransform: 'none',
+              minHeight: 'auto',
+              color: item.disabled
+                ? theme.custom.base.text.muted
+                : currentValue === item.id
+                ? theme.custom.tab.textActive
+                : theme.custom.tab.text,
+              '&:hover': {
+                color: !item.disabled ? theme.custom.base.text.primary : undefined,
+              },
+              '&.Mui-selected': {
+                color: theme.custom.tab.textActive,
+              },
+              '&.Mui-disabled': {
+                color: theme.custom.base.text.muted,
+                cursor: 'not-allowed',
+              },
+              '&:focus': {
+                outline: `2px solid ${theme.custom.base.accent[400]}`,
+                outlineOffset: '2px',
+              },
+            }}
+          />
+        ))}
+      </MuiTabs>
+
+      {currentTab?.content && (
+        <Box
+          role="tabpanel"
+          sx={{ mt: 4 }}
+        >
+          {currentTab.content}
+        </Box>
+      )}
+    </Box>
+  );
 };
 
 Tabs.displayName = 'Tabs';
-export { Tabs };
