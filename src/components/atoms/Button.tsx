@@ -1,6 +1,7 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import React from 'react';
 import { IconProps } from '@/types/icons'
+import "@/index.css"
 
 const buttonVariants = cva("button transition justify-start items-center rounded-md inline-flex flex-nowrap flex-row w-auto transition ease-out duration-300 disabled:cursor-not-allowed", {
     variants: {

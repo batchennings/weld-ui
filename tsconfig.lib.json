@@ -18,6 +18,6 @@
     }
   },
   "include": ["src/components/**/*", "src/lib/**/*", "src/types/**/*", "index.ts"],
-  "exclude": ["src/**/*.stories.tsx", "src/**/*.test.tsx", "src/mock/**/*", "src/pages/**/*", "src/stories/**/*"]
+  "exclude": ["src/**/*.stories.tsx", "src/**/*.test.tsx", "src/mock/**/*", "src/pages/**/*", "src/stories/**/*", "index.html"]
 }
 

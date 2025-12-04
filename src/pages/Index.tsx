@@ -1,7 +1,6 @@
 import { Button } from "@/components/atoms/Button"
 import { Alert } from "@/components/atoms/Alert"
 import { Pill } from "@/components/atoms/Pill"
-import { Table } from "@/components/organisms/Table";
 
 import { Pen, Plus, Trash } from "@/icons"
 import { InfoIcon, AlertIcon, DotFillIcon, SearchIcon } from '@primer/octicons-react'
@@ -105,7 +104,7 @@ const Index = () => {
                     ]}
                 />
             </div>
-    
+
 
             <div className="flex flex-row gap-1" id="filters">
                 <InputText placeholder="Rechercher" size="md" length="md" IconHeading={SearchIcon} shortcut="Ctrl + K" />
@@ -120,9 +119,6 @@ const Index = () => {
                         { label: 'Delete', destructive: false, shortcut: '⌘⌫' },
                     ]}
                 />
-            </div>
-            <div className="">
-                <Table data={tableData} columns={tableColumns} actions={tableActions}/>
             </div>
         </div>
     );
