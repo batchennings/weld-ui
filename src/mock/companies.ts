@@ -22,17 +22,17 @@ export const companiesActions = [
     {
         label: "View",
         Icon: Eye,
-        onClick: (rowData: any) => console.log("View", rowData)
+        onClick: (rowData: unknown) => console.log("View", rowData)
     },
     {
         label: "Edit",
         Icon: Pen,
-        onClick: (rowData: any) => console.log("Edit", rowData)
+        onClick: (rowData: unknown) => console.log("Edit", rowData)
     },
     {
         label: "Delete",
         Icon: Trash,
-        onClick: (rowData: any) => console.log("Delete", rowData)
+        onClick: (rowData: unknown) => console.log("Delete", rowData)
     },
 ]
 

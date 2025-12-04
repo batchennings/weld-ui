@@ -48,7 +48,7 @@ export type TabItem = {
     content?: React.ReactNode;
 };
 
-export type TabsProps = React.HTMLAttributes<HTMLDivElement> & 
+export type TabsProps = React.HTMLAttributes<HTMLDivElement> &
     VariantProps<typeof tabsVariants> & {
         items: TabItem[];
         defaultValue?: string;
@@ -86,7 +86,7 @@ const Tabs: React.FunctionComponent<TabsProps> = ({
                 {items.map((item) => {
                     const isActive = item.id === currentValue;
                     const state = item.disabled ? 'disabled' : isActive ? 'active' : 'inactive';
-                    
+
                     return (
                         <button
                             key={item.id}
@@ -102,9 +102,9 @@ const Tabs: React.FunctionComponent<TabsProps> = ({
                     );
                 })}
             </div>
-            
+
             {currentTab?.content && (
-                <div 
+                <div
                     id={`tabpanel-${currentTab.id}`}
                     role="tabpanel"
                     className="mt-4"

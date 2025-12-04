@@ -17,8 +17,9 @@ const Companies = () => {
         return haystack.includes(query.toLowerCase());
     });
 
-    const handleRowClick = (rowData: any) => {
-        navigate(`/company/${rowData.id}`);
+    const handleRowClick = (rowData: unknown) => {
+        const data = rowData as { id: string };
+        navigate(`/company/${data.id}`);
     };
 
     return (

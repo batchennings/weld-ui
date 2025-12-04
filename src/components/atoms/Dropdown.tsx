@@ -3,6 +3,7 @@ import React from 'react';
 import { DropdownMenu as DropdownPrimitive } from "radix-ui";
 import { cn } from "@/lib/utils";
 import { ListItem } from "./ListItem";
+import { IconProps } from '@/types/icons';
 
 const contentVariants = cva(
     [
@@ -37,7 +38,7 @@ export type DropdownItem = {
     label?: string;
     description?: string;
     shortcut?: string;
-    Icon?: React.ComponentType<{ size?: number; className?: string }>;
+    Icon?: React.ComponentType<IconProps>;
     disabled?: boolean;
     destructive?: boolean;
     onSelect?: () => void;

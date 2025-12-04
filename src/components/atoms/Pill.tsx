@@ -104,7 +104,7 @@ export type PillProps = React.HTMLAttributes<HTMLDivElement> &
 
 
 const Pill: React.FunctionComponent<PillProps> =
-    ({ className, type, style, Icon, title, size, content, ...props }, ref) => (
+    ({ className, type, style, Icon, title, size, content, ...props }) => (
         <div
             role="alert"
             className={cn(pillVariants({ type, style, size }), className, "")}
