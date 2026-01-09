@@ -1,4 +1,4 @@
-export default const TabsData = [
+const TabsData = [
     {
         label: "Souscriptions",
         icon: "",
@@ -23,4 +23,6 @@ export default const TabsData = [
         promoted: false,
         active: false
     },
-]
+];
+
+export default TabsData;

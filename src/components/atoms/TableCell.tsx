@@ -1,12 +1,21 @@
-import { IconProps } from "@primer/octicons-react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { Pill } from "../atoms/Pill";
 import { Dropdown } from "../atoms/Dropdown";
 import { Button } from "../atoms/Button";
 import { DotsH, Plus, ChevronUp, ChevronDown } from "@/icons";
 import { CheckboxGroup } from "../atoms/CheckboxGroup";
+import React from 'react';
+import { IconProps } from '@/types/icons';
 
-export const TableHeaderCell = ({ content, canSort, isSorted, onSort, ...rest }: any) => {
+export type TableHeaderCellProps = Omit<React.HTMLAttributes<HTMLTableCellElement>, 'content'> & {
+    content?: React.ReactNode;
+    canSort?: boolean;
+    isSorted?: false | "asc" | "desc";
+    onSort?: () => void;
+    dataType?: "checkbox" | "text";
+}
+
+export const TableHeaderCell = ({ content, canSort, isSorted, onSort, dataType, ...rest }: TableHeaderCellProps) => {
     const getSortIcon = () => {
         if (!canSort) return null;
         if (isSorted === 'asc') return <ChevronUp size={16} className="text-base-icon-color-secondary" />;
@@ -15,17 +24,21 @@ export const TableHeaderCell = ({ content, canSort, isSorted, onSort, ...rest }:
     };
 
     return (
-        <th 
+        <th
             className={`p-3 border-b-2 border-table-border-color text-table-text-color-secondary text-left ${
                 canSort ? 'cursor-pointer hover:bg-base-bg-color-hover select-none' : ''
             } ${ isSorted ? 'bg-table-bg-color-highlight' : ''}`}
             onClick={canSort ? onSort : undefined}
             {...rest}
         >
-            <div className="flex items-center gap-2">
-                <span>{content}</span>
-                {getSortIcon()}
-            </div>
+            {dataType === "checkbox" ? (
+                <CheckboxGroup />
+            ) : (
+                <div className="flex items-center gap-2">
+                    <span>{content}</span>
+                    {getSortIcon()}
+                </div>
+            )}
         </th>
     );
 };
@@ -48,15 +61,21 @@ const bodyCellVariants = cva("border-b px-4 py-3 border-table-border-color", {
         priority: "primary",
     },
 });
+export type TableAction = {
+    label: string;
+    Icon?: React.ComponentType<IconProps>;
+    onClick?: (rowData: unknown) => void;
+}
+
 export type TableBodyCellProps = Omit<React.HTMLAttributes<HTMLTableCellElement>, 'content'> & VariantProps<typeof bodyCellVariants> & {
-    content?: any;
-    priority?: string;
+    content?: React.ReactNode;
+    priority?: "primary" | "secondary";
     dataType: "text" | "numeric" | "pill" | "action" | "checkbox";
     icon?: React.ComponentType<IconProps>;
     options?: object;
     buttonAction?: string;
-    actions?: any[];
-    rowData?: any;
+    actions?: TableAction[];
+    rowData?: unknown;
     isSorted?: false | "asc" | "desc";
     canSort?: boolean;
 }
@@ -81,13 +100,12 @@ export const TableBodyCell: React.FunctionComponent<TableBodyCellProps> = ({ con
             })()}
             {dataType == "action" && actions && (
                 <Dropdown
-                    triggerLabel=""
                     items={actions.map(action => ({
                         label: action.label,
                         Icon: action.Icon,
                         onSelect: () => action.onClick?.(rowData)
                     }))}
-                    triggerElement={
+                    trigger={
                         <Button
                             type="ghost"
                             size="sm"

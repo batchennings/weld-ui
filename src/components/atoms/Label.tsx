@@ -17,6 +17,7 @@ const LabelVariants = cva(
 })
 export type LabelProps = React.HTMLAttributes<HTMLFormElement> & VariantProps<typeof LabelVariants> & {
     htmlFor?: string;
+    description?: string;
 };
 export const Label: React.FunctionComponent<LabelProps> = ({ htmlFor, className, description, children }) => {
     return (

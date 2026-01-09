@@ -1,0 +1,76 @@
+# Source files
+src/
+.storybook/
+
+# Development files
+*.stories.tsx
+*.stories.ts
+*.test.tsx
+*.test.ts
+*.spec.tsx
+*.spec.ts
+
+# Mock data
+src/mock/
+
+# Pages (demo pages)
+src/pages/
+
+# Stories
+src/stories/
+
+# Config files
+vite.config.ts
+tsconfig.json
+tsconfig.app.json
+tsconfig.node.json
+tsconfig.lib.json
+vitest.workspace.ts
+eslint.config.js
+tailwind.config.ts
+postcss.config.js
+components.json
+
+# Build tools
+.github/
+.vscode/
+.idea/
+node_modules/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Development artifacts
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Documentation (keep README.md)
+CLAUDE.md
+
+# Testing
+coverage/
+.nyc_output/
+
+# HTML files (if you have index.html for dev)
+index.html
+
+# Lock files (optional - some prefer to include them)
+pnpm-lock.yaml
+yarn.lock
+package-lock.json
+
